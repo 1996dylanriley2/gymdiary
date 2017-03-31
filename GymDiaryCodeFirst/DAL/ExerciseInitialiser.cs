@@ -12,7 +12,7 @@ namespace GymDiaryCodeFirst.DAL
         {
             var exercises = new List<Exercise>
             {
-            new Exercise{Name="Biceip Curl", PrimaryMuscleId=1, SecondaryMuscleId=2},
+            new Exercise{Name="Biceip Curl", PrimaryMuscleId=9, SecondaryMuscleId=9},
             new Exercise{Name="Reverse Biceip Curl", PrimaryMuscleId=1, SecondaryMuscleId=2},
             new Exercise{Name="Bench Press", PrimaryMuscleId=5, SecondaryMuscleId=2},
 

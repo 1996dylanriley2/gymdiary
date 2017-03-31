@@ -1,0 +1,15 @@
+﻿.navbar{
+    background-color:teal;
+}
+.navbar #menu a:hover,  .navbar #profileMenu a:hover {
+    background-color:cadetblue;
+    color:white;
+}
+
+.navbar #menu a, .navbar #profileMenu a{
+    color:white;
+}
+#brand{
+    color:black;
+}
+
