@@ -215,6 +215,17 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\HomePage.css" />
+    <Content Include="Content\Images\HomePage\75ca22434b3d810142d165da6eed8f83.jpg" />
+    <Content Include="Content\Images\HomePage\Arnold-Schwarzenegger-Champion-BodyBuilder.jpg" />
+    <Content Include="Content\Images\HomePage\butt.jpg" />
+    <Content Include="Content\Images\HomePage\failsworth-fitness-the-gym.jpg" />
+    <Content Include="Content\Images\HomePage\failsworth-fitness-the-gym1.jpg" />
+    <Content Include="Content\Images\HomePage\Girl.jpg" />
+    <Content Include="Content\Images\HomePage\girl1.jpg" />
+    <Content Include="Content\Images\HomePage\Muhammad-Ali.jpg" />
+    <Content Include="Content\Images\HomePage\muhammad-ali1.jpg" />
+    <Content Include="Content\Nav.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />

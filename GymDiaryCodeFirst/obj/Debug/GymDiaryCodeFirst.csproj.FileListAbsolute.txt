@@ -77,6 +77,6 @@ C:\Users\driley\Documents\dylan\QA\resourrces\GymDiaryCodeFirst\GymDiaryCodeFirs
 C:\Users\driley\Documents\dylan\QA\resourrces\GymDiaryCodeFirst\GymDiaryCodeFirst\bin\Microsoft.Owin.Security.Google.xml
 C:\Users\driley\Documents\dylan\QA\resourrces\GymDiaryCodeFirst\GymDiaryCodeFirst\bin\Microsoft.Owin.Security.Twitter.xml
 C:\Users\driley\Documents\dylan\QA\resourrces\GymDiaryCodeFirst\GymDiaryCodeFirst\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
-C:\Users\driley\Documents\dylan\QA\resourrces\GymDiaryCodeFirst\GymDiaryCodeFirst\obj\Debug\GymDiaryCodeFirst.csprojResolveAssemblyReference.cache
 C:\Users\driley\Documents\dylan\QA\resourrces\GymDiaryCodeFirst\GymDiaryCodeFirst\obj\Debug\GymDiaryCodeFirst.dll
 C:\Users\driley\Documents\dylan\QA\resourrces\GymDiaryCodeFirst\GymDiaryCodeFirst\obj\Debug\GymDiaryCodeFirst.pdb
+C:\Users\driley\Documents\dylan\QA\resourrces\GymDiaryCodeFirst\GymDiaryCodeFirst\obj\Debug\GymDiaryCodeFirst.csprojResolveAssemblyReference.cache
