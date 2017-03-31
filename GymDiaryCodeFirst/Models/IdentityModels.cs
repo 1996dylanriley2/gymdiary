@@ -21,7 +21,7 @@ namespace GymDiaryCodeFirst.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("GymDiaryCF", throwIfV1Schema: false)
         {
         }
 

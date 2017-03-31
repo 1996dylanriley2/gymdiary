@@ -9,6 +9,9 @@
 .navbar #menu a, .navbar #profileMenu a{
     color:white;
 }
+.navbar-right a{
+    color:white;
+}
 #brand{
     color:black;
 }
