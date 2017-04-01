@@ -6,9 +6,9 @@ using System.Web;
 
 namespace GymDiaryCodeFirst.DAL
 {
-    public class ExerciseInitialiser : System.Data.Entity.DropCreateDatabaseIfModelChanges<ExerciseContext>
+    public class ExerciseInitialiser : System.Data.Entity.DropCreateDatabaseIfModelChanges<GymDiaryContext>
     {
-        protected override void Seed(ExerciseContext context)
+        protected override void Seed(GymDiaryContext context)
         {
             var exercises = new List<Exercise>
             {
