@@ -7,9 +7,9 @@ using System.Web;
 
 namespace GymDiaryCodeFirst.DAL
 {
-    public class ExerciseContext:DbContext
+    public class GymDiaryContext:DbContext
     {
-        public ExerciseContext():base("GymDiaryCF")
+        public GymDiaryContext():base("GymDiaryCF")
         {
 
         }

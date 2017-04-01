@@ -13,7 +13,7 @@ namespace GymDiaryCodeFirst.Views
 {
     public class ExercisesController : Controller
     {
-        private ExerciseContext db = new ExerciseContext();
+        private GymDiaryContext db = new GymDiaryContext();
 
         // GET: Exercises
         public ActionResult Index()
