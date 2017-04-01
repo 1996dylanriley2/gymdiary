@@ -80,3 +80,5 @@ C:\Users\driley\Documents\dylan\QA\resourrces\GymDiaryCodeFirst\GymDiaryCodeFirs
 C:\Users\driley\Documents\dylan\QA\resourrces\GymDiaryCodeFirst\GymDiaryCodeFirst\obj\Debug\GymDiaryCodeFirst.dll
 C:\Users\driley\Documents\dylan\QA\resourrces\GymDiaryCodeFirst\GymDiaryCodeFirst\obj\Debug\GymDiaryCodeFirst.pdb
 C:\Users\driley\Documents\dylan\QA\resourrces\GymDiaryCodeFirst\GymDiaryCodeFirst\obj\Debug\GymDiaryCodeFirst.csprojResolveAssemblyReference.cache
+C:\Users\driley\Documents\dylan\QA\resourrces\GymDiaryCodeFirst\GymDiaryCodeFirst\obj\Debug\GymDiaryCodeFirst.Migrations.init.resources
+C:\Users\driley\Documents\dylan\QA\resourrces\GymDiaryCodeFirst\GymDiaryCodeFirst\obj\Debug\GymDiaryCodeFirst.csproj.GenerateResource.Cache
