@@ -1,0 +1,23 @@
+﻿#dashboard{
+    text-align: center;
+    vertical-align:middle;
+    padding:3%;
+}
+.frame a{
+    color: black; 
+}
+.frame{
+    background-color:lightgrey;
+    display:inline-block;
+    border-width:2px;
+    border-color:black;
+    border:solid;
+    text-align: center;
+    vertical-align:middle;
+}
+.frame-image{
+    display:block;
+    border-color:black;
+    border:solid;
+    border-width:2px 0px 0px 0px;
+}

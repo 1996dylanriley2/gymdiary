@@ -10,6 +10,10 @@ namespace GymDiaryCodeFirst.Controllers
     {
         public ActionResult Index()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return View("Dashboard");
+            }
             return View();
         }
 
