@@ -32,8 +32,8 @@ namespace GymDiaryCodeFirst.DAL
             exercises.ForEach(e => context.Exercises.Add(e));
             context.SaveChanges();
 
-            var y = new ExerciseStats() { ExerciseId = 1 , Reps = "2", Sets = 10, WeightInKg = 17.5f, WorkoutId = 1 };
-            var x = new Workout { Date = DateTime.Now, UserId = 1, ExerciseStats1 = y };
+          
+            var x = new Workout { Date = DateTime.Now, UserId = 1};
             var workouts = new List<Workout>
             {
                 x
@@ -41,7 +41,16 @@ namespace GymDiaryCodeFirst.DAL
             };
 
             workouts.ForEach(e => context.Workouts.Add(e));
+            context.SaveChanges(); 
+
+            var y = new ExerciseStats() { ExerciseId = 1, Reps = "2", Sets = 10, WeightInKg = 17.5f, WorkoutId = 1 };
+            var workoutStats = new List<ExerciseStats> { y };
+
+            workoutStats.ForEach(e => context.ExerciseStats.Add(e));
             context.SaveChanges();
+
+            workouts[0].ExerciseStats1Id = 1;
+
         }
     }
 }
