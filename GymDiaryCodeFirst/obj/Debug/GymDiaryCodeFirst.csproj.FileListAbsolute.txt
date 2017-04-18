@@ -83,3 +83,5 @@ C:\Users\driley\Documents\dylan\QA\resourrces\GymDiaryCodeFirst\GymDiaryCodeFirs
 C:\Users\driley\Documents\dylan\QA\resourrces\GymDiaryCodeFirst\GymDiaryCodeFirst\obj\Debug\GymDiaryCodeFirst.Migrations.InitialCreate.resources
 C:\Users\driley\Documents\dylan\QA\resourrces\GymDiaryCodeFirst\GymDiaryCodeFirst\obj\Debug\GymDiaryCodeFirst.csproj.GenerateResource.Cache
 C:\Users\driley\Documents\dylan\QA\resourrces\GymDiaryCodeFirst\GymDiaryCodeFirst\obj\Debug\GymDiaryCodeFirst.Migrations.DatabaseWorksCascadeDeleteWorks.resources
+C:\Users\driley\Documents\dylan\QA\resourrces\GymDiaryCodeFirst\GymDiaryCodeFirst\obj\Debug\GymDiaryCodeFirst.Migrations.TestingExerciseStatId.resources
+C:\Users\driley\Documents\dylan\QA\resourrces\GymDiaryCodeFirst\GymDiaryCodeFirst\obj\Debug\GymDiaryCodeFirst.Migrations.AddedMoreExerciseStatsWithLables.resources

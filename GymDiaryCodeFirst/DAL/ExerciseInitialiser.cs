@@ -49,7 +49,7 @@ namespace GymDiaryCodeFirst.DAL
             workoutStats.ForEach(e => context.ExerciseStats.Add(e));
             context.SaveChanges();
 
-            workouts[0].ExerciseStats1Id = 1;
+            workouts.First(xx => xx.UserId == 1).ExerciseStats1 = y;
 
         }
     }
