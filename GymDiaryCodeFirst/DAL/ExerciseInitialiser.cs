@@ -43,13 +43,11 @@ namespace GymDiaryCodeFirst.DAL
             workouts.ForEach(e => context.Workouts.Add(e));
             context.SaveChanges(); 
 
-            var y = new ExerciseStats() { ExerciseId = 1, Reps = "2", Sets = 10, WeightInKg = 17.5f, WorkoutId = 1 };
+            var y = new ExerciseStats() { ExerciseId = 1, Reps = 2, Sets = 10, WeightInKg = 17.5f, WorkoutId = 1};
             var workoutStats = new List<ExerciseStats> { y };
 
             workoutStats.ForEach(e => context.ExerciseStats.Add(e));
             context.SaveChanges();
-
-            workouts.First(xx => xx.UserId == 1).ExerciseStats1 = y;
 
         }
     }

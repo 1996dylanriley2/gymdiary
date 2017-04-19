@@ -13,6 +13,7 @@ namespace GymDiaryCodeFirst.Models
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
+        public ExerciseType Type { get; set; }
         [Required]
         public int PrimaryMuscleId { get; set; }
         [ForeignKey("PrimaryMuscleId")]

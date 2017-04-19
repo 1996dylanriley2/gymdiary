@@ -203,26 +203,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201704181825364_InitialCreate.cs" />
-    <Compile Include="Migrations\201704181825364_InitialCreate.Designer.cs">
-      <DependentUpon>201704181825364_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201704181838269_DatabaseWorksCascadeDeleteWorks.cs" />
-    <Compile Include="Migrations\201704181838269_DatabaseWorksCascadeDeleteWorks.Designer.cs">
-      <DependentUpon>201704181838269_DatabaseWorksCascadeDeleteWorks.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201704181932085_TestingExerciseStatId.cs" />
-    <Compile Include="Migrations\201704181932085_TestingExerciseStatId.Designer.cs">
-      <DependentUpon>201704181932085_TestingExerciseStatId.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201704181941175_AddedMoreExerciseStatsWithLables.cs" />
-    <Compile Include="Migrations\201704181941175_AddedMoreExerciseStatsWithLables.Designer.cs">
-      <DependentUpon>201704181941175_AddedMoreExerciseStatsWithLables.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Exercise.cs" />
     <Compile Include="Models\ExerciseStats.cs" />
+    <Compile Include="Models\ExerciseType.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Muscle.cs" />
@@ -334,20 +318,6 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201704181825364_InitialCreate.resx">
-      <DependentUpon>201704181825364_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201704181838269_DatabaseWorksCascadeDeleteWorks.resx">
-      <DependentUpon>201704181838269_DatabaseWorksCascadeDeleteWorks.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201704181932085_TestingExerciseStatId.resx">
-      <DependentUpon>201704181932085_TestingExerciseStatId.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201704181941175_AddedMoreExerciseStatsWithLables.resx">
-      <DependentUpon>201704181941175_AddedMoreExerciseStatsWithLables.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
