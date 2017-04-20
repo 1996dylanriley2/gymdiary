@@ -18,7 +18,8 @@ namespace GymDiaryCodeFirst.Views
         // GET: Exercises
         public ActionResult Index()
         {
-            return View(db.Exercises.ToList());
+            var exercises = db.Exercises.Include(e => e.PrimaryMuscle).Include(e => e.SecondaryMuscle);
+            return View(exercises.ToList());
         }
 
         // GET: Exercises/Details/5
@@ -39,6 +40,8 @@ namespace GymDiaryCodeFirst.Views
         // GET: Exercises/Create
         public ActionResult Create()
         {
+            ViewBag.PrimaryMuscleId = new SelectList(db.Muscles, "Id", "Name");
+            ViewBag.SecondaryMuscleId = new SelectList(db.Muscles, "Id", "Name");
             return View();
         }
 
@@ -56,6 +59,8 @@ namespace GymDiaryCodeFirst.Views
                 return RedirectToAction("Index");
             }
 
+            ViewBag.PrimaryMuscleId = new SelectList(db.Muscles, "Id", "Name", exercise.PrimaryMuscleId);
+            ViewBag.SecondaryMuscleId = new SelectList(db.Muscles, "Id", "Name", exercise.SecondaryMuscleId);
             return View(exercise);
         }
 
@@ -71,6 +76,8 @@ namespace GymDiaryCodeFirst.Views
             {
                 return HttpNotFound();
             }
+            ViewBag.PrimaryMuscleId = new SelectList(db.Muscles, "Id", "Name", exercise.PrimaryMuscleId);
+            ViewBag.SecondaryMuscleId = new SelectList(db.Muscles, "Id", "Name", exercise.SecondaryMuscleId);
             return View(exercise);
         }
 
@@ -87,6 +94,8 @@ namespace GymDiaryCodeFirst.Views
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.PrimaryMuscleId = new SelectList(db.Muscles, "Id", "Name", exercise.PrimaryMuscleId);
+            ViewBag.SecondaryMuscleId = new SelectList(db.Muscles, "Id", "Name", exercise.SecondaryMuscleId);
             return View(exercise);
         }
 

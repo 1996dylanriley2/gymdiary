@@ -25,6 +25,18 @@
         <dd>
             @Html.DisplayFor(model => model.Date)
         </dd>
+        @foreach (var exercise in Model.Exercises)
+        {
+            <dt>
+                @exercise.Exercise.Name
+            </dt>
+            <dd>
+                @exercise.Reps
+            </dd>
+            <dd>
+                @exercise.Sets
+            </dd>
+        }
 
     </dl>
 </div>

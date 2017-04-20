@@ -213,8 +213,8 @@
     <Compile Include="Models\Workout.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="Controllers\ExercisesController.cs" />
     <Compile Include="Controllers\MusclesController.cs" />
+    <Compile Include="Controllers\ExercisesController.cs" />
     <Compile Include="Controllers\WorkoutsController.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -291,17 +291,17 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Exercises\Create.cshtml" />
-    <Content Include="Views\Exercises\Delete.cshtml" />
-    <Content Include="Views\Exercises\Details.cshtml" />
-    <Content Include="Views\Exercises\Edit.cshtml" />
-    <Content Include="Views\Exercises\Index.cshtml" />
     <Content Include="Views\Home\Dashboard.cshtml" />
     <Content Include="Views\Muscles\Create.cshtml" />
     <Content Include="Views\Muscles\Delete.cshtml" />
     <Content Include="Views\Muscles\Details.cshtml" />
     <Content Include="Views\Muscles\Edit.cshtml" />
     <Content Include="Views\Muscles\Index.cshtml" />
+    <Content Include="Views\Exercises\Create.cshtml" />
+    <Content Include="Views\Exercises\Delete.cshtml" />
+    <Content Include="Views\Exercises\Details.cshtml" />
+    <Content Include="Views\Exercises\Edit.cshtml" />
+    <Content Include="Views\Exercises\Index.cshtml" />
     <Content Include="Views\Workouts\Create.cshtml" />
     <Content Include="Views\Workouts\Delete.cshtml" />
     <Content Include="Views\Workouts\Details.cshtml" />

@@ -33,6 +33,7 @@ namespace GymDiaryCodeFirst.Views
             {
                 return HttpNotFound();
             }
+            
             return View(workout);
         }
 
