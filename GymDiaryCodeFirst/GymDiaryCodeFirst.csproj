@@ -214,8 +214,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Controllers\MusclesController.cs" />
-    <Compile Include="Controllers\ExercisesController.cs" />
     <Compile Include="Controllers\WorkoutsController.cs" />
+    <Compile Include="Controllers\ExercisesController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -297,16 +297,16 @@
     <Content Include="Views\Muscles\Details.cshtml" />
     <Content Include="Views\Muscles\Edit.cshtml" />
     <Content Include="Views\Muscles\Index.cshtml" />
-    <Content Include="Views\Exercises\Create.cshtml" />
-    <Content Include="Views\Exercises\Delete.cshtml" />
-    <Content Include="Views\Exercises\Details.cshtml" />
-    <Content Include="Views\Exercises\Edit.cshtml" />
-    <Content Include="Views\Exercises\Index.cshtml" />
     <Content Include="Views\Workouts\Create.cshtml" />
     <Content Include="Views\Workouts\Delete.cshtml" />
     <Content Include="Views\Workouts\Details.cshtml" />
     <Content Include="Views\Workouts\Edit.cshtml" />
     <Content Include="Views\Workouts\Index.cshtml" />
+    <Content Include="Views\Exercises\Create.cshtml" />
+    <Content Include="Views\Exercises\Delete.cshtml" />
+    <Content Include="Views\Exercises\Details.cshtml" />
+    <Content Include="Views\Exercises\Edit.cshtml" />
+    <Content Include="Views\Exercises\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

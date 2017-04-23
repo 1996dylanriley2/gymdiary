@@ -28,13 +28,23 @@ namespace GymDiaryCodeFirst.Views
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Workout workout = db.Workouts.Find(id);
+            List<ExerciseStats> workout = db.ExerciseStats.Where(w => w.WorkoutId == id).ToList();
             if (workout == null)
             {
                 return HttpNotFound();
             }
-            
+            foreach(var item in workout)
+            {
+                item.Exercise = db.Exercises.Find(item.ExerciseId);
+                item.Workout = db.Workouts.Find(item.WorkoutId);
+            }
             return View(workout);
+        }
+
+        public Workout AddExercise(ExerciseStats e, Workout workout)
+        {
+            workout.Exercises.Add(e);
+            return workout;
         }
 
         // GET: Workouts/Create
@@ -48,7 +58,7 @@ namespace GymDiaryCodeFirst.Views
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "WorkoutId,UserId,Date")] Workout workout)
+        public ActionResult Create([Bind(Include = "WorkoutId,UserId,Name,Date")] Workout workout)
         {
             if (ModelState.IsValid)
             {
@@ -72,7 +82,20 @@ namespace GymDiaryCodeFirst.Views
             {
                 return HttpNotFound();
             }
+            AddExercisesToWorkoutFromDB(workout);
             return View(workout);
+        }
+
+        public Workout AddExercisesToWorkoutFromDB(Workout workout)
+        {
+            workout.Exercises = db.ExerciseStats.Where(e => e.WorkoutId == workout.WorkoutId).ToList();
+
+            foreach (var item in workout.Exercises)
+            {
+                item.Exercise = db.Exercises.Find(item.ExerciseId);
+                item.Workout = db.Workouts.Find(item.WorkoutId);
+            }
+            return workout;
         }
 
         // POST: Workouts/Edit/5
@@ -80,7 +103,7 @@ namespace GymDiaryCodeFirst.Views
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "WorkoutId,UserId,Date")] Workout workout)
+        public ActionResult Edit([Bind(Include = "WorkoutId,UserId,Name,Date")] Workout workout)
         {
             if (ModelState.IsValid)
             {

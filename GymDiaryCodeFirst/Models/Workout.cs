@@ -14,6 +14,8 @@ namespace GymDiaryCodeFirst.Models
         public int WorkoutId { get; set; }
         public int? UserId { get; set; }
         //public ApplicationUser User { get; set; }
+        [Display(Name = "Workout Name")]
+        public string Name { get; set; }
         public DateTime? Date { get; set; }
         public List<ExerciseStats> Exercises { get; set; }
         

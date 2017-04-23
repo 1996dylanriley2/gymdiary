@@ -1,4 +1,4 @@
-﻿@model GymDiaryCodeFirst.Models.Workout
+﻿@model List<GymDiaryCodeFirst.Models.ExerciseStats>
 
 @{
     ViewBag.Title = "Details";
@@ -9,38 +9,38 @@
 <div>
     <h4>Workout</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.UserId)
-        </dt>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Exercise</th>
+                <th>Sets</th>
+                <th>Reps</th>
+                <th>Duration</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var exercise in Model)
+            {
+                <tr>
+                    <td>
+                        @exercise.Exercise.Name
+                    </td>
 
-        <dd>
-            @Html.DisplayFor(model => model.UserId)
-        </dd>
+                    <td>
+                        @exercise.Reps
+                    </td>
+                    <td>
+                        @exercise.Sets
+                    </td>
+                </tr>
+                
+            }
+        </tbody>
+        
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Date)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Date)
-        </dd>
-        @foreach (var exercise in Model.Exercises)
-        {
-            <dt>
-                @exercise.Exercise.Name
-            </dt>
-            <dd>
-                @exercise.Reps
-            </dd>
-            <dd>
-                @exercise.Sets
-            </dd>
-        }
-
-    </dl>
+    </table>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.WorkoutId }) |
+    @*@Html.ActionLink("Edit", "Edit", new { id = Model.WorkoutId }) |*@
     @Html.ActionLink("Back to List", "Index")
 </p>
