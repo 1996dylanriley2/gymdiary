@@ -71,6 +71,12 @@ namespace GymDiaryCodeFirst.Views
             return View(workout);
         }
 
+        [HttpGet]
+        public ActionResult AddExercise()
+        {
+            return PartialView("_AddExercise");
+        }
+
         // GET: Workouts/Edit/5
         public ActionResult Edit(int? id)
         {
