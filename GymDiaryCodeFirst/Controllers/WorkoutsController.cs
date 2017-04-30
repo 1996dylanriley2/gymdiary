@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using GymDiaryCodeFirst.DAL;
 using GymDiaryCodeFirst.Models;
+using GymDiaryCodeFirst.Models.ViewModels;
 
 namespace GymDiaryCodeFirst.Views
 {
@@ -83,7 +84,13 @@ namespace GymDiaryCodeFirst.Views
                 return HttpNotFound();
             }
             AddExercisesToWorkoutFromDB(workout);
-            return View(workout);
+
+            WorkoutExerciseListViewModel model = new WorkoutExerciseListViewModel();
+
+            model.Exercises = db.Exercises;
+            model.Workout = workout;
+
+            return View(model);
         }
 
         public Workout AddExercisesToWorkoutFromDB(Workout workout)
@@ -103,15 +110,33 @@ namespace GymDiaryCodeFirst.Views
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "WorkoutId,UserId,Name,Date")] Workout workout)
+        public ActionResult Edit(/*[Bind(Include = "WorkoutId,UserId,Name,Date")] Workout workout*/ WorkoutExerciseListViewModel viewModel)
         {
+            var workout = viewModel.Workout;
             if (ModelState.IsValid)
             {
-                db.Entry(workout).State = EntityState.Modified;
+                var workoutInDb = db.Workouts.Single(x => x.WorkoutId == workout.WorkoutId);
+                workoutInDb.Name = workout.Name;
+                
+
+                foreach (var e in workout.Exercises)
+                {
+                    var eInDb = db.ExerciseStats.Single(x => x.ExerciseStatsId == e.ExerciseStatsId);
+                    eInDb.ExerciseId = e.ExerciseId;
+                    eInDb.WeightInKg = e.WeightInKg;
+                    eInDb.Sets = e.Sets;
+                    eInDb.Reps = e.Reps;
+                    eInDb.Minutes = e.Minutes;
+                    db.SaveChanges();
+                } 
+                //What happens when an exercise has been removed/added?
+                
+                //Impliment adding and deleting an exercise
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(workout);
+            return View(viewModel);
         }
 
         // GET: Workouts/Delete/5

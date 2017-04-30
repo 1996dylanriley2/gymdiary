@@ -160,4 +160,3 @@ D:\Coding\gymdiary\GymDiaryCodeFirst\bin\Microsoft.Owin.Security.Twitter.xml
 D:\Coding\gymdiary\GymDiaryCodeFirst\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 D:\Coding\gymdiary\GymDiaryCodeFirst\obj\Debug\GymDiaryCodeFirst.dll
 D:\Coding\gymdiary\GymDiaryCodeFirst\obj\Debug\GymDiaryCodeFirst.pdb
-D:\Coding\gymdiary\GymDiaryCodeFirst\obj\Debug\GymDiaryCodeFirst.csprojResolveAssemblyReference.cache
