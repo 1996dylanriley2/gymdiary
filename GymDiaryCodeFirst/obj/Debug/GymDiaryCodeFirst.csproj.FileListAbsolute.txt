@@ -96,6 +96,7 @@ D:\Coding\gymdiary\GymDiaryCodeFirst\bin\GymDiaryCodeFirst.dll.config
 D:\Coding\gymdiary\GymDiaryCodeFirst\bin\GymDiaryCodeFirst.dll
 D:\Coding\gymdiary\GymDiaryCodeFirst\bin\GymDiaryCodeFirst.pdb
 D:\Coding\gymdiary\GymDiaryCodeFirst\bin\Antlr3.Runtime.dll
+D:\Coding\gymdiary\GymDiaryCodeFirst\bin\BeginCollectionItem.dll
 D:\Coding\gymdiary\GymDiaryCodeFirst\bin\EntityFramework.dll
 D:\Coding\gymdiary\GymDiaryCodeFirst\bin\EntityFramework.SqlServer.dll
 D:\Coding\gymdiary\GymDiaryCodeFirst\bin\Microsoft.AI.Agent.Intercept.dll

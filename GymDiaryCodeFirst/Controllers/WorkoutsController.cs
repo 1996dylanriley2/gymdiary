@@ -42,12 +42,6 @@ namespace GymDiaryCodeFirst.Views
             return View(workout);
         }
 
-        public Workout AddExercise(ExerciseStats e, Workout workout)
-        {
-            workout.Exercises.Add(e);
-            return workout;
-        }
-
         // GET: Workouts/Create
         public ActionResult Create()
         {
@@ -72,31 +66,90 @@ namespace GymDiaryCodeFirst.Views
         }
 
         [HttpGet]
-        public ActionResult AddExercise()
+        public ActionResult AddExercise(int id)
         {
-            return PartialView("_AddExercise");
+            Workout workout = db.Workouts.Find(id);
+            AddExercisesToWorkoutFromDB(workout);
+
+            workout.Exercises.Add(new ExerciseStats() { WorkoutId = 100, ExerciseStatsId = 100 });
+            ViewData["dropdownData"] = GetListOfExercisesForDropDown();
+            ViewBag.id = id;
+
+            return PartialView("_AddExerciseList", workout.Exercises);
+        }
+        public IQueryable<SelectListItem> GetListOfExercisesForDropDown()
+        {
+            return db.Exercises.Select(i => new SelectListItem
+            {
+                Value = i.Id.ToString(),
+                Text = i.Name
+            });
+        }
+        public ActionResult LoadExercises(int id)
+        {
+            Workout workout = db.Workouts.Find(id);
+            AddExercisesToWorkoutFromDB(workout);
+            ViewData["dropdownData"] = GetListOfExercisesForDropDown();
+            ViewBag.id = id;
+
+            return PartialView("_AddExerciseList", workout.Exercises);
         }
 
-        // GET: Workouts/Edit/5
         public ActionResult Edit(int? id)
         {
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Workout workout = db.Workouts.Find(id);
+
             if (workout == null)
             {
                 return HttpNotFound();
             }
+
             AddExercisesToWorkoutFromDB(workout);
 
-            WorkoutExerciseListViewModel model = new WorkoutExerciseListViewModel();
+            ViewBag.Title = workout.Name;
+            ViewBag.id = id;
+            
+            return View(workout.Exercises);
+        }
 
-            model.Exercises = db.Exercises;
-            model.Workout = workout;
+        // POST: Workouts/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public void Edit(int id, List<ExerciseStats> exerciseStats)
+        {
+            
+            //if (ModelState.IsValid)
+            //{
+            //    var workoutInDb = db.Workouts.Single(x => x.WorkoutId == workout.WorkoutId);
+            //    workoutInDb.Name = workout.Name;
 
-            return View(model);
+
+            //    foreach (var e in workout.Exercises)
+            //    {
+            //        var eInDb = db.ExerciseStats.Single(x => x.ExerciseStatsId == e.ExerciseStatsId);
+            //        eInDb.ExerciseId = e.ExerciseId;
+            //        eInDb.WeightInKg = e.WeightInKg;
+            //        eInDb.Sets = e.Sets;
+            //        eInDb.Reps = e.Reps;
+            //        eInDb.Minutes = e.Minutes;
+            //        db.SaveChanges();
+            //    }
+            //    //What happens when an exercise has been removed/added?
+
+            //    //Impliment adding and deleting an exercise
+
+            //    db.SaveChanges();
+            //    return RedirectToAction("Index");
+            //}
+           
         }
 
         public Workout AddExercisesToWorkoutFromDB(Workout workout)
@@ -109,40 +162,6 @@ namespace GymDiaryCodeFirst.Views
                 item.Workout = db.Workouts.Find(item.WorkoutId);
             }
             return workout;
-        }
-
-        // POST: Workouts/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(/*[Bind(Include = "WorkoutId,UserId,Name,Date")] Workout workout*/ WorkoutExerciseListViewModel viewModel)
-        {
-            var workout = viewModel.Workout;
-            if (ModelState.IsValid)
-            {
-                var workoutInDb = db.Workouts.Single(x => x.WorkoutId == workout.WorkoutId);
-                workoutInDb.Name = workout.Name;
-                
-
-                foreach (var e in workout.Exercises)
-                {
-                    var eInDb = db.ExerciseStats.Single(x => x.ExerciseStatsId == e.ExerciseStatsId);
-                    eInDb.ExerciseId = e.ExerciseId;
-                    eInDb.WeightInKg = e.WeightInKg;
-                    eInDb.Sets = e.Sets;
-                    eInDb.Reps = e.Reps;
-                    eInDb.Minutes = e.Minutes;
-                    db.SaveChanges();
-                } 
-                //What happens when an exercise has been removed/added?
-                
-                //Impliment adding and deleting an exercise
-
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(viewModel);
         }
 
         // GET: Workouts/Delete/5

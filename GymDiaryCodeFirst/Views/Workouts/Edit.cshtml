@@ -1,16 +1,12 @@
-﻿@model GymDiaryCodeFirst.Models.ViewModels.WorkoutExerciseListViewModel
+﻿
+@model List<GymDiaryCodeFirst.Models.ExerciseStats>
 
 @{
-        ViewBag.Title = "Edit";
-        var listOfExercises = Model.Exercises.Select(i => new SelectListItem
-        {
-            Value = i.Id.ToString(),
-            Text = i.Name
-        });
+    var dropdownData = (IQueryable<SelectListItem>)ViewData["dropdownData"];
 
 }
 
-<h2>Edit @Model.Workout.Name</h2>
+<h2>Edit @ViewBag.Title</h2>
 
 
 @using (Html.BeginForm())
@@ -18,58 +14,26 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Workout</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Workout.WorkoutId)
-
-        
-            @Html.HiddenFor(model => model.Workout.UserId)
-            @Html.HiddenFor(model => model.Workout.Date)
-        
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Workout.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Workout.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Workout.Name, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        
-        @for(var i = 0; i < Model.Workout.Exercises.Count; i++)
-        {
-            <div class="form-group">
-
-                <div class="col-md-10">
-                    Exercise:
-                    @Html.HiddenFor(m => m.Workout.Exercises[i].ExerciseStatsId)
-                    @Html.EditorFor(m => m.Workout.Exercises[i].Minutes)
-                    @Html.EditorFor(m => m.Workout.Exercises[i].Sets)
-                    @Html.EditorFor(m => m.Workout.Exercises[i].Reps)
-                    @Html.HiddenFor(m => m.Workout.Exercises[i].WorkoutId)                    
-                    @Html.DropDownListFor(m => m.Workout.Exercises[i].ExerciseId, listOfExercises, new { })
-                   
-                   
-                </div>
-            </div>
-        }
-        
+        <h4>Workout</h4>        
 
         <div id="newExercise"class="form-group">
-
+            
         </div>
-        <button id="loadNew">ADD NEW EXERCISE</button>
+       
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
+            
+                
         </div>
     </div>
+
+    <input id="workoutId" name="Workout.WorkoutId" type="hidden" value="@ViewBag.id">
+
 }
 
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval", "~/Scripts/src/EditWorkout.js")

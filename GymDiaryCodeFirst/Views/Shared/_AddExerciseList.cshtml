@@ -1,0 +1,29 @@
+﻿@model List<GymDiaryCodeFirst.Models.ExerciseStats>
+@{
+    var dropdownData = (IQueryable<SelectListItem>)ViewData["dropdownData"];
+
+}
+
+@using (Html.BeginForm("Edit", "Workouts", new { id = ViewBag.id }, FormMethod.Post))
+{
+    for (var i = 0; i < Model.Count; i++)
+    {
+        <div>
+            Exercise:
+            
+            @Html.DropDownListFor(m => m[i].ExerciseId, dropdownData, new { })
+            @Html.HiddenFor(m => m[i].WeightInKg)
+            @Html.EditorFor(m => m[i].Minutes)
+            @Html.EditorFor(m => m[i].Sets)
+            @Html.EditorFor(m => m[i].Reps)
+           
+            
+        </div>
+
+    }
+    
+    <input type="submit" value="Add New exercise" id="loadNew" class="" />
+    
+
+
+}

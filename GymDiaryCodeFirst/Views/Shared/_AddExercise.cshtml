@@ -1,5 +1,6 @@
 ﻿@model GymDiaryCodeFirst.Models.ExerciseStats
-New Exercise:
+Exercise:
+@Model.Exercise.
 @Html.EditorFor(m => m.Minutes)
 @Html.EditorFor(m => m.Sets)
 @Html.EditorFor(m => m.Reps)
