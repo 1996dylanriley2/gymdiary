@@ -1,10 +1,5 @@
 ﻿
-@model List<GymDiaryCodeFirst.Models.ExerciseStats>
-
-@{
-    var dropdownData = (IQueryable<SelectListItem>)ViewData["dropdownData"];
-
-}
+@model GymDiaryCodeFirst.Models.ViewModels.WorkoutExerciseDropdown
 
 <h2>Edit @ViewBag.Title</h2>
 
@@ -14,16 +9,44 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Workout</h4>        
+        <h3>Workout</h3>  
+        <h4>@Model.Workout.Name</h4>      
 
-        <div id="newExercise"class="form-group">
-            
-        </div>
-       
-        <div class="form-group">
-            
-                
-        </div>
+        @Html.HiddenFor(x => x.Workout.WorkoutId)
+        @Html.HiddenFor(x => x.Workout.Date)
+        @Html.HiddenFor(x => x.Workout.Name)
+        
+        @using (Html.BeginForm("Edit", "Workouts", new { id = ViewBag.id }, FormMethod.Post))
+        {
+            for (var i = 0; i < Model.Workout.Exercises.Count; i++)
+            {
+                var id = "Exercise" + i.ToString();
+                if (Model.Workout.Exercises[i].ExerciseStatsId != 0)
+                {
+                    @:<div id="@id">
+                }
+
+                else { 
+                    @:<div id="@id" class="hidden hiddenExercise">
+                }
+
+                            @:Exercise:
+                            @Html.HiddenFor(m => m.Workout.Exercises[i].ExerciseStatsId)
+                            @Html.DropDownListFor(m => m.Workout.Exercises[i].ExerciseId, new SelectList(Model.Exercises, "Value", "Text", Model.Workout.Exercises[i].ExerciseId.ToString()), "--Select--")
+                            @Html.EditorFor(m => m.Workout.Exercises[i].WeightInKg)
+                            @Html.EditorFor(m => m.Workout.Exercises[i].Minutes)
+                            @Html.EditorFor(m => m.Workout.Exercises[i].Sets)
+                            @Html.EditorFor(m => m.Workout.Exercises[i].Reps)
+                            <button class="cancel">x</button>
+                        @:</div>
+
+            }
+
+                        <button type="button" id="newExercise">Add Exercise</button>
+                        <button type="submit">Submit</button>
+
+         }
+
     </div>
 
     <input id="workoutId" name="Workout.WorkoutId" type="hidden" value="@ViewBag.id">

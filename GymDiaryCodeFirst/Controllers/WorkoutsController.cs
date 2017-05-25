@@ -77,7 +77,7 @@ namespace GymDiaryCodeFirst.Views
 
             return PartialView("_AddExerciseList", workout.Exercises);
         }
-        public IQueryable<SelectListItem> GetListOfExercisesForDropDown()
+        public IEnumerable<SelectListItem> GetListOfExercisesForDropDown()
         {
             return db.Exercises.Select(i => new SelectListItem
             {
@@ -94,9 +94,21 @@ namespace GymDiaryCodeFirst.Views
 
             return PartialView("_AddExerciseList", workout.Exercises);
         }
+        //This method adds 20 extra exercises to the model incase the user wants to add many exercises.
+        //Adding items in the view was difficult so this seems eaiser.
+        //Also empty exercises are just removed when form is submitted
+        public List<ExerciseStats> Add20Exercises(List<ExerciseStats> listToExtend)
+        {
+            for(var i = 0; i < 20; i++)
+            {
+                listToExtend.Add(new ExerciseStats());
+            }
+
+            return listToExtend;
+        }
 
         public ActionResult Edit(int? id)
-        {
+         {
 
             if (id == null)
             {
@@ -112,44 +124,56 @@ namespace GymDiaryCodeFirst.Views
 
             AddExercisesToWorkoutFromDB(workout);
 
-            ViewBag.Title = workout.Name;
+            workout.Exercises = Add20Exercises(workout.Exercises);
+
+            var viewModel = new WorkoutExerciseDropdown();
+
+            viewModel.Exercises = GetListOfExercisesForDropDown();
+            viewModel.Workout = workout;
             ViewBag.id = id;
             
-            return View(workout.Exercises);
+
+            return View(viewModel);
         }
 
         // POST: Workouts/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public void Edit(int id, List<ExerciseStats> exerciseStats)
+        public ActionResult Edit(int id, Workout workout)
         {
-            
-            //if (ModelState.IsValid)
-            //{
-            //    var workoutInDb = db.Workouts.Single(x => x.WorkoutId == workout.WorkoutId);
-            //    workoutInDb.Name = workout.Name;
 
+            if (ModelState.IsValid)
+            {
+                var workoutInDb = db.Workouts.Single(x => x.WorkoutId == workout.WorkoutId);
+                workoutInDb.Name = workout.Name;
 
-            //    foreach (var e in workout.Exercises)
-            //    {
-            //        var eInDb = db.ExerciseStats.Single(x => x.ExerciseStatsId == e.ExerciseStatsId);
-            //        eInDb.ExerciseId = e.ExerciseId;
-            //        eInDb.WeightInKg = e.WeightInKg;
-            //        eInDb.Sets = e.Sets;
-            //        eInDb.Reps = e.Reps;
-            //        eInDb.Minutes = e.Minutes;
-            //        db.SaveChanges();
-            //    }
-            //    //What happens when an exercise has been removed/added?
+               
+                foreach (var e in workout.Exercises)
+                { 
+                    //Modifies any existing exerciseStats
+                    if (e.ExerciseStatsId != 0)
+                    {
+                        var eInDb = db.ExerciseStats.Single(x => x.ExerciseStatsId == e.ExerciseStatsId);
+                        eInDb.ExerciseId = e.ExerciseId;
+                        eInDb.WeightInKg = e.WeightInKg;
+                        eInDb.Sets = e.Sets;
+                        eInDb.Reps = e.Reps;
+                        eInDb.Minutes = e.Minutes;
+                        db.SaveChanges(); 
+                    }        
+                    else if (e.ExerciseId != 0)
+                    {
+                        workoutInDb.Exercises.Add(e);
+                    }          
+                }
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(workout);
 
-            //    //Impliment adding and deleting an exercise
-
-            //    db.SaveChanges();
-            //    return RedirectToAction("Index");
-            //}
-           
         }
 
         public Workout AddExercisesToWorkoutFromDB(Workout workout)
