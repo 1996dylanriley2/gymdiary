@@ -1,0 +1,46 @@
+﻿@model List<GymDiaryCodeFirst.Models.ExerciseStats>
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Workout</h4>
+    <hr />
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Exercise</th>
+                <th>Sets</th>
+                <th>Reps</th>
+                <th>Duration</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var exercise in Model)
+            {
+                <tr>
+                    <td>
+                        @exercise.Exercise.Name
+                    </td>
+
+                    <td>
+                        @exercise.Reps
+                    </td>
+                    <td>
+                        @exercise.Sets
+                    </td>
+                </tr>
+                
+            }
+        </tbody>
+        
+
+    </table>
+</div>
+<p>
+    @*@Html.ActionLink("Edit", "Edit", new { id = Model.WorkoutId }) |*@
+    @Html.ActionLink("Back to List", "Index")
+</p>

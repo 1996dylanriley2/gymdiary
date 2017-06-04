@@ -11,118 +11,107 @@ using GymDiaryCodeFirst.Models;
 
 namespace GymDiaryCodeFirst.Views
 {
-    public class ExercisesController : Controller
+    public class MusclesController : Controller
     {
         private GymDiaryContext db = new GymDiaryContext();
 
-        // GET: Exercises
+        // GET: Muscles
         public ActionResult Index()
         {
-            var exercises = db.Exercises.Include(e => e.PrimaryMuscle).Include(e => e.SecondaryMuscle);
-            return View(exercises.ToList());
+            return View(db.Muscles.ToList());
         }
 
-        // GET: Exercises/Details/5
+        // GET: Muscles/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Exercise exercise = db.Exercises.Find(id);
-            if (exercise == null)
+            Muscle muscle = db.Muscles.Find(id);
+            if (muscle == null)
             {
                 return HttpNotFound();
             }
-            return View(exercise);
+            return View(muscle);
         }
 
-        // GET: Exercises/Create
+        // GET: Muscles/Create
         public ActionResult Create()
         {
-            ViewBag.PrimaryMuscleId = new SelectList(db.Muscles, "Id", "Name");
-            ViewBag.SecondaryMuscleId = new SelectList(db.Muscles, "Id", "Name");
             return View();
         }
 
-        // POST: Exercises/Create
+        // POST: Muscles/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,PrimaryMuscleId,SecondaryMuscleId")] Exercise exercise)
+        public ActionResult Create([Bind(Include = "Id,Name")] Muscle muscle)
         {
             if (ModelState.IsValid)
             {
-                db.Exercises.Add(exercise);
+                db.Muscles.Add(muscle);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.PrimaryMuscleId = new SelectList(db.Muscles, "Id", "Name", exercise.PrimaryMuscleId);
-            ViewBag.SecondaryMuscleId = new SelectList(db.Muscles, "Id", "Name", exercise.SecondaryMuscleId);
-            return View(exercise);
+            return View(muscle);
         }
 
-        // GET: Exercises/Edit/5
+        // GET: Muscles/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Exercise exercise = db.Exercises.Find(id);
-            if (exercise == null)
+            Muscle muscle = db.Muscles.Find(id);
+            if (muscle == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.PrimaryMuscleId = new SelectList(db.Muscles, "Id", "Name", exercise.PrimaryMuscleId);
-            ViewBag.SecondaryMuscleId = new SelectList(db.Muscles, "Id", "Name", exercise.SecondaryMuscleId);
-            return View(exercise);
+            return View(muscle);
         }
 
-
-
-        // POST: Exercises/Edit/5
+        // POST: Muscles/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,PrimaryMuscleId,SecondaryMuscleId")] Exercise exercise)
+        public ActionResult Edit([Bind(Include = "Id,Name")] Muscle muscle)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(exercise).State = EntityState.Modified;
+                db.Entry(muscle).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.PrimaryMuscleId = new SelectList(db.Muscles, "Id", "Name", exercise.PrimaryMuscleId);
-            ViewBag.SecondaryMuscleId = new SelectList(db.Muscles, "Id", "Name", exercise.SecondaryMuscleId);
-            return View(exercise);
+            return View(muscle);
         }
 
-        // GET: Exercises/Delete/5
+        // GET: Muscles/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Exercise exercise = db.Exercises.Find(id);
-            if (exercise == null)
+            Muscle muscle = db.Muscles.Find(id);
+            if (muscle == null)
             {
                 return HttpNotFound();
             }
-            return View(exercise);
+            return View(muscle);
         }
 
-        // POST: Exercises/Delete/5
+        // POST: Muscles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Exercise exercise = db.Exercises.Find(id);
-            db.Exercises.Remove(exercise);
+            Muscle muscle = db.Muscles.Find(id);
+            db.Muscles.Remove(muscle);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

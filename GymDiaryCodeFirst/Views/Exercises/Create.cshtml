@@ -24,17 +24,17 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.PrimaryMuscleId, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.PrimaryMuscleId, "PrimaryMuscleId", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.PrimaryMuscleId, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.DropDownList("PrimaryMuscleId", null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.PrimaryMuscleId, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.SecondaryMuscleId, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.SecondaryMuscleId, "SecondaryMuscleId", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.SecondaryMuscleId, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.DropDownList("SecondaryMuscleId", null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.SecondaryMuscleId, "", new { @class = "text-danger" })
             </div>
         </div>

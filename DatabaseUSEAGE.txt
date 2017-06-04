@@ -1,0 +1,13 @@
+The database in gymdiary is supposed to be used as follows:
+muscles are created/added
+exercises are created/added.
+
+workouts are then planned. a exercisestats is created with a null workoutId. 
+This will be added when the exercises is being done. Note only required reps and sets are filled in. Not actual.
+
+
+workouts are then done in the gym. As each exercise is completed a exercisetats object gets updated withh the
+ relivant info such as sets/reps achieved vs actual ect... also datetime is then added.
+a copy of the workout is saved with references to the exercise stats.
+
+if i want to delete a exerciseStat i first have to  the value of it to null in Workout table, then delete.

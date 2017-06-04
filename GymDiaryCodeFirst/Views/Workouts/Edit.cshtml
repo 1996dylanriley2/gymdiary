@@ -1,0 +1,65 @@
+﻿
+@model GymDiaryCodeFirst.Models.ViewModels.WorkoutExerciseDropdown
+
+<h2>Edit @ViewBag.Title</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h3>Workout</h3>  
+        <h4>@Model.Workout.Name</h4>      
+
+        @Html.HiddenFor(x => x.Workout.WorkoutId)
+        @Html.HiddenFor(x => x.Workout.Date)
+        @Html.HiddenFor(x => x.Workout.Name)
+        
+        @using (Html.BeginForm("Edit", "Workouts", new { id = ViewBag.id }, FormMethod.Post))
+        {
+            for (var i = 0; i < Model.Workout.Exercises.Count; i++)
+            {
+                var id = "Exercise" + i.ToString();
+                if (Model.Workout.Exercises[i].ExerciseStatsId != 0)
+                {
+                    @:<div id="@id" class="exercise-container">
+                }
+
+                else { 
+                    @:<div id="@id" class="hidden hiddenExercise exercise-container">
+                }
+
+                            @:Exercise:
+                            @Html.HiddenFor(m => m.Workout.Exercises[i].ExerciseStatsId, new { @class = "id" })
+                            @Html.DropDownListFor(m => m.Workout.Exercises[i].ExerciseId, new SelectList(Model.Exercises, "Value", "Text", Model.Workout.Exercises[i].ExerciseId.ToString()), "--Select--")
+                            @Html.EditorFor(m => m.Workout.Exercises[i].WeightInKg)
+                            @Html.EditorFor(m => m.Workout.Exercises[i].Minutes)
+                            @Html.EditorFor(m => m.Workout.Exercises[i].Sets)
+                            @Html.EditorFor(m => m.Workout.Exercises[i].Reps)
+                            <button type="button" class="cancel">x</button>
+                        @:</div>
+
+            }
+
+                        <button type="button" id="newExercise">Add Exercise</button>
+                        <button type="submit">Submit</button>
+
+         }
+
+    </div>
+
+    <input id="workoutId" name="Workout.WorkoutId" type="hidden" value="@ViewBag.id">
+    <p class="hidden" id="exercisesToRemove"></p>
+
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval", "~/Scripts/src/EditWorkout.js")
+
+}
