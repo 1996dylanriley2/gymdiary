@@ -65,48 +65,6 @@ namespace GymDiaryCodeFirst.Views
             return View(workout);
         }
 
-        [HttpGet]
-        public ActionResult AddExercise(int id)
-        {
-            Workout workout = db.Workouts.Find(id);
-            AddExercisesToWorkoutFromDB(workout);
-
-            workout.Exercises.Add(new ExerciseStats() { WorkoutId = 100, ExerciseStatsId = 100 });
-            ViewData["dropdownData"] = GetListOfExercisesForDropDown();
-            ViewBag.id = id;
-
-            return PartialView("_AddExerciseList", workout.Exercises);
-        }
-        public IEnumerable<SelectListItem> GetListOfExercisesForDropDown()
-        {
-            return db.Exercises.Select(i => new SelectListItem
-            {
-                Value = i.Id.ToString(),
-                Text = i.Name
-            });
-        }
-        public ActionResult LoadExercises(int id)
-        {
-            Workout workout = db.Workouts.Find(id);
-            AddExercisesToWorkoutFromDB(workout);
-            ViewData["dropdownData"] = GetListOfExercisesForDropDown();
-            ViewBag.id = id;
-
-            return PartialView("_AddExerciseList", workout.Exercises);
-        }
-        //This method adds 60 extra exercises to the model incase the user wants to add many exercises.
-        //Adding items in the view was difficult so this seems eaiser.
-        //Also empty exercises are just removed when form is submitted
-        public List<ExerciseStats> AddEmptyExercises(List<ExerciseStats> listToExtend)
-        {
-            for(var i = 0; i < 60; i++)
-            {
-                listToExtend.Add(new ExerciseStats());
-            }
-
-            return listToExtend;
-        }
-
         public ActionResult Edit(int? id)
          {
 
@@ -144,8 +102,6 @@ namespace GymDiaryCodeFirst.Views
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, Workout workout)
         {
-           
-
             var workoutInDb = db.Workouts.Single(x => x.WorkoutId == workout.WorkoutId);
             workoutInDb.Name = workout.Name;
 
@@ -192,6 +148,27 @@ namespace GymDiaryCodeFirst.Views
                 item.Workout = db.Workouts.Find(item.WorkoutId);
             }
             return workout;
+        }
+        public IEnumerable<SelectListItem> GetListOfExercisesForDropDown()
+        {
+            return db.Exercises.Select(i => new SelectListItem
+            {
+                Value = i.Id.ToString(),
+                Text = i.Name
+            });
+        }
+
+        //This method adds extra exercises to the model incase the user wants to add many exercises.
+        //Adding items in the view was difficult so this seems eaiser.
+        //Also empty exercises are just removed when form is submitted
+        public List<ExerciseStats> AddEmptyExercises(List<ExerciseStats> listToExtend)
+        {
+            for (var i = 0; i < 60; i++)
+            {
+                listToExtend.Add(new ExerciseStats());
+            }
+
+            return listToExtend;
         }
 
         // GET: Workouts/Delete/5
