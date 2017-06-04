@@ -23,21 +23,21 @@
                 var id = "Exercise" + i.ToString();
                 if (Model.Workout.Exercises[i].ExerciseStatsId != 0)
                 {
-                    @:<div id="@id">
+                    @:<div id="@id" class="exercise-container">
                 }
 
                 else { 
-                    @:<div id="@id" class="hidden hiddenExercise">
+                    @:<div id="@id" class="hidden hiddenExercise exercise-container">
                 }
 
                             @:Exercise:
-                            @Html.HiddenFor(m => m.Workout.Exercises[i].ExerciseStatsId)
+                            @Html.HiddenFor(m => m.Workout.Exercises[i].ExerciseStatsId, new { @class = "id" })
                             @Html.DropDownListFor(m => m.Workout.Exercises[i].ExerciseId, new SelectList(Model.Exercises, "Value", "Text", Model.Workout.Exercises[i].ExerciseId.ToString()), "--Select--")
                             @Html.EditorFor(m => m.Workout.Exercises[i].WeightInKg)
                             @Html.EditorFor(m => m.Workout.Exercises[i].Minutes)
                             @Html.EditorFor(m => m.Workout.Exercises[i].Sets)
                             @Html.EditorFor(m => m.Workout.Exercises[i].Reps)
-                            <button class="cancel">x</button>
+                            <button type="button" class="cancel">x</button>
                         @:</div>
 
             }
@@ -50,6 +50,7 @@
     </div>
 
     <input id="workoutId" name="Workout.WorkoutId" type="hidden" value="@ViewBag.id">
+    <p class="hidden" id="exercisesToRemove"></p>
 
 }
 

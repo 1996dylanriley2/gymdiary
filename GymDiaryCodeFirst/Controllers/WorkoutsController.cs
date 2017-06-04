@@ -94,12 +94,12 @@ namespace GymDiaryCodeFirst.Views
 
             return PartialView("_AddExerciseList", workout.Exercises);
         }
-        //This method adds 20 extra exercises to the model incase the user wants to add many exercises.
+        //This method adds 60 extra exercises to the model incase the user wants to add many exercises.
         //Adding items in the view was difficult so this seems eaiser.
         //Also empty exercises are just removed when form is submitted
-        public List<ExerciseStats> Add20Exercises(List<ExerciseStats> listToExtend)
+        public List<ExerciseStats> AddEmptyExercises(List<ExerciseStats> listToExtend)
         {
-            for(var i = 0; i < 20; i++)
+            for(var i = 0; i < 60; i++)
             {
                 listToExtend.Add(new ExerciseStats());
             }
@@ -124,7 +124,7 @@ namespace GymDiaryCodeFirst.Views
 
             AddExercisesToWorkoutFromDB(workout);
 
-            workout.Exercises = Add20Exercises(workout.Exercises);
+            workout.Exercises = AddEmptyExercises(workout.Exercises);
 
             var viewModel = new WorkoutExerciseDropdown();
 
@@ -144,35 +144,41 @@ namespace GymDiaryCodeFirst.Views
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, Workout workout)
         {
+           
 
-            if (ModelState.IsValid)
-            {
-                var workoutInDb = db.Workouts.Single(x => x.WorkoutId == workout.WorkoutId);
-                workoutInDb.Name = workout.Name;
+            var workoutInDb = db.Workouts.Single(x => x.WorkoutId == workout.WorkoutId);
+            workoutInDb.Name = workout.Name;
 
                
-                foreach (var e in workout.Exercises)
-                { 
-                    //Modifies any existing exerciseStats
-                    if (e.ExerciseStatsId != 0)
+            foreach (var e in workout.Exercises)
+            { 
+                //Modifies any existing exerciseStats
+                if (e.ExerciseStatsId != 0)
+                {
+                    var eInDb = db.ExerciseStats.Single(x => x.ExerciseStatsId == e.ExerciseStatsId);
+
+                    if (e.ExerciseId == 0)
+                        db.ExerciseStats.Remove(eInDb);
+                    else
                     {
-                        var eInDb = db.ExerciseStats.Single(x => x.ExerciseStatsId == e.ExerciseStatsId);
                         eInDb.ExerciseId = e.ExerciseId;
                         eInDb.WeightInKg = e.WeightInKg;
                         eInDb.Sets = e.Sets;
                         eInDb.Reps = e.Reps;
                         eInDb.Minutes = e.Minutes;
-                        db.SaveChanges(); 
-                    }        
-                    else if (e.ExerciseId != 0)
-                    {
-                        workoutInDb.Exercises.Add(e);
-                    }          
-                }
+                    }
+                    db.SaveChanges(); 
+                }        
+                else if (e.ExerciseId != 0)
+                {
+                    workoutInDb.Exercises.Add(e);
+                } 
+                        
+                
                 db.SaveChanges();
-                return RedirectToAction("Index");
             }
-            return View(workout);
+            return RedirectToAction("Index");
+            // if modelstate is invalid then => return View(new WorkoutExerciseDropdown() { Exercises = GetListOfExercisesForDropDown(), Workout = workout });
 
         }
 
