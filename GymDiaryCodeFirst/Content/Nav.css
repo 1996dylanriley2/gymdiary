@@ -16,3 +16,89 @@
     color:black;
 }
 
+/*this will display the desktop layout*/
+@media only screen and (min-width: 768px) {
+    #body{
+      
+    }
+    #menu-container-full{
+        display:inline-block;
+    }
+    #menu-container-mobile{
+        display:none;
+    }
+}
+/*This will show mobile*/
+@media only screen and (max-width: 767px) {
+    #menu-container-mobile{
+        display:inline-block;
+        width:100%;
+    }
+    #menu-container-full{
+        display:none;
+    }
+    #sidebar-mobile{
+       width:40%;
+       height:100vh;
+       background-color:cadetblue;
+       color:white;
+       float:right;
+       position:relative;
+       z-index:1;
+       
+   }
+   #sidebarContent{
+       position:fixed;
+       background-color:cadetblue;
+       color:white;
+       height:100vh;
+       width:100%;
+       padding-top:5%;
+
+
+   }
+    #sidebarContent ul{
+       list-style-type: none; 
+       padding-left:3%;
+   }
+     #sidebarContent li{
+       padding-top:2%;
+       padding-bottom:2%; 
+   }
+   
+  #sidebarContent a:hover {
+    background-color:teal;
+    color:white;
+    }
+   #sidebarContent a{
+       color:white;  
+   }
+   .shiftLeft{
+      position:relative;
+      margin-left:-60%;
+      width:100%;
+   }
+   .hide{
+       display:none;
+   }
+   #mobileMenuBtn:visited { 
+    color:teal;
+    }
+    #menu { 
+    margin:1%;
+    }
+   .smallTextbox{
+       width:70%
+   }
+   .absoluteContainer{
+       position:absolute;
+       padding-left:3%;
+   }
+   .smallTextbox input{
+       margin-left:5%;
+   }
+
+   footer{
+       display:inline-block;
+   }
+}

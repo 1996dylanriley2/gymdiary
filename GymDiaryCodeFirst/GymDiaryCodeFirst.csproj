@@ -273,7 +273,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\src\EditWorkout.js" />
-    <Content Include="Scripts\_layoutMobile.js" />
+    <Content Include="Scripts\_layout.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -328,7 +328,6 @@
     <Content Include="Views\Shared\_AddExercise.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Collection.cshtml" />
     <Content Include="Views\Shared\_AddExerciseList.cshtml" />
-    <Content Include="Views\Shared\_Layout.Mobile.cshtml" />
     <Content Include="Views\Shared\_LoginFormPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>

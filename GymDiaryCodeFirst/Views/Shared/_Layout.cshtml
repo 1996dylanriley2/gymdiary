@@ -11,14 +11,10 @@
 <body>
     <div class="navbar navbar-fixed-top">
         <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
+            <div class="navbar-header" id="menu-container-full">
                 @Html.ActionLink("GymDiary", "Index", "Home", new { area = "" }, new { @class = "navbar-brand", @id = "brand" })
             </div>
+
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav" id="menu">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
@@ -28,17 +24,44 @@
                 @Html.Partial("_LoginPartial")
             </div>
         </div>
+        <div class="navbar-header" id="menu-container-mobile">
+            @Html.ActionLink("GymDiary", "Index", "Home", new { area = "" }, new { @class = "navbar-brand", @id = "brand" })
+            <ul class="nav navbar-nav" id="menu">
+                <li class="pull-right"><a id="mobileMenuBtn"><span class="glyphicon glyphicon-menu-hamburger"></span> Menu</a></li>
+            </ul>
+        </div>
     </div>
-    <div class="container body-content">
+    <aside id="sidebar-mobile" class="hide">
+        <div id="sidebarContent">
+            <ul>
+                <li>@Html.ActionLink("Home", "Index", "Home")</li>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li>@Html.ActionLink("Account", "About", "Home")</li>
+                    <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+                }
+            </ul>
+            @if (!User.Identity.IsAuthenticated)
+            {
+                <div class="absoluteContainer">
+                    @Html.Partial("_LoginFormPartial", new GymDiaryCodeFirst.Models.LoginViewModel())
+                </div>
+            }
+        </div>
+    </aside>
+    <div class="container body-content" id="body">
         @RenderBody()
         <hr />
         <footer>
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
         </footer>
     </div>
+    
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/_layout.js"></script>
     @RenderSection("scripts", required: false)
 </body>
 </html>
