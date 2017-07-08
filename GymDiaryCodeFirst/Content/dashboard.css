@@ -44,3 +44,19 @@
         width:100%;
     }
 }
+@media only screen and (max-width: 600px){
+    table{
+        width:100%;
+    }
+
+    td{
+        display:block;
+        width:100%;
+    }
+
+    tr{
+        display:block;
+        margin-bottom:30px;
+    }
+}
+
