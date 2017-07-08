@@ -9,6 +9,7 @@ function WidthChange(mq) {
 	if (mq.matches) {
 		// window width is at least 768px
 		$('#sidebar-mobile').addClass('hide');
+		$('#body').removeClass('shiftLeft');
 	} else {
 		// window width is less than 767px
 		
