@@ -35,7 +35,7 @@
                 @if (User.Identity.IsAuthenticated)
                 {
                     <li>@Html.ActionLink("Account", "About", "Home")</li>
-                   <li>@Html.ActionLink("Sign out", "Contact", "Home")</li>
+                    <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
                 }
                 
             </ul>
@@ -51,7 +51,6 @@
         
     </aside>
     <div class="container body-content" id="body">
-        
         @RenderBody()
         <hr />
         <footer>

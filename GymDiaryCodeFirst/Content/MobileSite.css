@@ -2,6 +2,7 @@
    #menu-container{
        width:100%;
    }
+  
    #sidebar{
        width:40%;
        height:100vh;
@@ -38,9 +39,10 @@
    #sidebarContent a{
        color:white;  
    }
-   .resizeToSidebar{
-       width:60%;
-       margin-left:0;
+   .shiftLeft{
+      position:relative;
+      margin-left:-60%;
+      width:100%;
    }
    .hide{
        display:none;
