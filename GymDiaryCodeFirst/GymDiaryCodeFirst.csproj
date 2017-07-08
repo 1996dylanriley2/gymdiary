@@ -242,7 +242,6 @@
     <Content Include="Content\Images\HomePage\stats.jpg" />
     <Content Include="Content\Images\HomePage\workouts.jpg" />
     <Content Include="Content\Images\HomePage\workouts1.png" />
-    <Content Include="Content\MobileSite.css" />
     <Content Include="Content\Nav.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />

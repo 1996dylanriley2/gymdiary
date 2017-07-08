@@ -87,15 +87,17 @@
     #menu { 
     margin:1%;
     }
-   .smallTextbox{
+   .loginFieldContainer{
        width:70%
    }
-   .absoluteContainer{
+   .positionAbsolute{
        position:absolute;
-       padding-left:3%;
    }
-   .smallTextbox input{
+   .loginFieldContainer input{
        margin-left:5%;
+   }
+   .menuTextMobile{
+       font-weight:bold;
    }
 
    footer{
