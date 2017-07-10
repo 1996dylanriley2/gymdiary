@@ -8,12 +8,12 @@
 }
 .frame{
     background-color:lightgrey;
-    display:inline-block;
     border-width:2px;
     border-color:black;
     border:solid;
     text-align: center;
     vertical-align:middle;
+    display:inline-block;
 }
 .frame-image{
     display:block;
@@ -27,3 +27,36 @@
     vertical-align:middle;
 
 }
+#dashboard-container{
+    margin:2%;
+}
+@media only screen and (max-width: 850px) {
+    #frame-container{
+        width:60%vh;
+        margin:5%vh;
+        position:relative;
+    }
+    .frame{
+        display:inline-block;
+        margin:5%;
+    }
+    .frame img{
+        width:100%;
+    }
+}
+@media only screen and (max-width: 600px){
+    table{
+        width:100%;
+    }
+
+    td{
+        display:block;
+        width:100%;
+    }
+
+    tr{
+        display:block;
+        margin-bottom:30px;
+    }
+}
+
