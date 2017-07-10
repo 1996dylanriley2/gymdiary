@@ -6,7 +6,7 @@ using System.Web;
 
 namespace GymDiaryCodeFirst.DAL
 {
-    public class ExerciseInitialiser : System.Data.Entity.DropCreateDatabaseAlways<GymDiaryContext>
+    public class ExerciseInitialiser : System.Data.Entity.CreateDatabaseIfNotExists<GymDiaryContext>
     {
         protected override void Seed(GymDiaryContext context)
         {

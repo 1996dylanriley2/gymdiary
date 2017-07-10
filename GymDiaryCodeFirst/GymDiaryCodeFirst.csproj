@@ -200,6 +200,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\DoWorkoutController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="DAL\GymDiaryContext.cs" />
@@ -221,6 +222,8 @@
     <Compile Include="Controllers\MusclesController.cs" />
     <Compile Include="Controllers\WorkoutsController.cs" />
     <Compile Include="Controllers\ExercisesController.cs" />
+    <Compile Include="Utils\GetWorkout.cs.cs" />
+    <Compile Include="Utils\ResetStats.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -328,6 +331,8 @@
     <Content Include="Views\Shared\EditorTemplates\Collection.cshtml" />
     <Content Include="Views\Shared\_AddExerciseList.cshtml" />
     <Content Include="Views\Shared\_LoginFormPartial.cshtml" />
+    <Content Include="Views\DoWorkout\Index.cshtml" />
+    <Content Include="Views\DoWorkout\CompletedWorkout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

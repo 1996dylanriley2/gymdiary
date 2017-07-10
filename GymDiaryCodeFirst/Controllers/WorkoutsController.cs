@@ -140,6 +140,7 @@ namespace GymDiaryCodeFirst.Views
 
         public Workout AddExercisesToWorkoutFromDB(Workout workout)
         {
+            //TODO: use the untils instead of this class
             workout.Exercises = db.ExerciseStats.Where(e => e.WorkoutId == workout.WorkoutId).ToList();
 
             foreach (var item in workout.Exercises)
@@ -148,6 +149,7 @@ namespace GymDiaryCodeFirst.Views
                 item.Workout = db.Workouts.Find(item.WorkoutId);
             }
             return workout;
+
         }
         public IEnumerable<SelectListItem> GetListOfExercisesForDropDown()
         {
