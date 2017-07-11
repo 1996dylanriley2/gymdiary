@@ -6,7 +6,7 @@ using System.Web;
 
 namespace GymDiaryCodeFirst.DAL
 {
-    public class ExerciseInitialiser : System.Data.Entity.CreateDatabaseIfNotExists<GymDiaryContext>
+    public class ExerciseInitialiser : System.Data.Entity.DropCreateDatabaseAlways<GymDiaryContext>
     {
         protected override void Seed(GymDiaryContext context)
         {
@@ -35,7 +35,7 @@ namespace GymDiaryCodeFirst.DAL
             var y = new ExerciseStats() { ExerciseId = 1, Reps = 2, Sets = 10, WeightInKg = 17.5f, WorkoutId = 1};
             
 
-            var x = new Workout { Date = DateTime.Now,Name="Test Workout", UserId = 1, Exercises = new List<ExerciseStats> { new ExerciseStats { ExerciseId = 1, Reps = 2, Sets = 10, WeightInKg = 17.5f, WorkoutId = 1 } } };
+            var x = new Workout { Date = DateTime.Now,Name="Test Workout", UserId = "1a", Exercises = new List<ExerciseStats> { new ExerciseStats { ExerciseId = 1, Reps = 2, Sets = 10, WeightInKg = 17.5f, WorkoutId = 1 } } };
             var workouts = new List<Workout>
             {
                 x

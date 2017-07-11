@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using GymDiaryCodeFirst.DAL;
 using GymDiaryCodeFirst.Models;
 using GymDiaryCodeFirst.Models.ViewModels;
+using Microsoft.AspNet.Identity;
 
 namespace GymDiaryCodeFirst.Views
 {
@@ -45,7 +46,18 @@ namespace GymDiaryCodeFirst.Views
         // GET: Workouts/Create
         public ActionResult Create()
         {
-            return View();
+            //TODO: refactor this controller as its duplicates alot of the code in edit
+            var workout = new Workout() {UserId = User.Identity.GetUserId(), Date = DateTime.Now, };
+
+            workout.Exercises = new List<ExerciseStats>();
+            workout.Exercises = AddEmptyExercises(workout.Exercises);
+
+            var viewModel = new WorkoutExerciseDropdown();
+
+            viewModel.Exercises = GetListOfExercisesForDropDown();
+            viewModel.Workout = workout;
+
+            return View("Edit",viewModel);
         }
 
         // POST: Workouts/Create
@@ -53,16 +65,19 @@ namespace GymDiaryCodeFirst.Views
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "WorkoutId,UserId,Name,Date")] Workout workout)
+        public ActionResult Create(Workout workout)
         {
-            if (ModelState.IsValid)
+            var newWorkout = new Workout() { Date = DateTime.Now, Name = workout.Name, UserId = workout.UserId, Exercises = new List<ExerciseStats>() };
+            foreach (var e in workout.Exercises)
             {
-                db.Workouts.Add(workout);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (e.ExerciseId != 0)
+                {
+                    newWorkout.Exercises.Add(e);
+                }    
             }
-
-            return View(workout);
+            db.Workouts.Add(newWorkout);
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         public ActionResult Edit(int? id)
@@ -103,6 +118,17 @@ namespace GymDiaryCodeFirst.Views
         public ActionResult Edit(int id, Workout workout)
         {
             var workoutInDb = db.Workouts.Single(x => x.WorkoutId == workout.WorkoutId);
+            //this is for when youre actually creating a workout now editing one.
+            //int newWorkoutId;
+            //if (workoutInDb == null)
+            //{
+            //    db.Workouts.Add(workout);
+            //    db.SaveChanges();
+            //}
+            //newWorkoutId = workout.WorkoutId;
+            //var newWorkout = db.Workouts.Single(x => x.WorkoutId == newWorkoutId);
+
+
             workoutInDb.Name = workout.Name;
 
                
@@ -125,14 +151,18 @@ namespace GymDiaryCodeFirst.Views
                     }
                     db.SaveChanges(); 
                 }        
-                else if (e.ExerciseId != 0)
+                else if (e.ExerciseId != 0 && workoutInDb != null)
                 {
                     workoutInDb.Exercises.Add(e);
-                } 
-                        
-                
+                }
+                //If creating a new workout not editing
+                else if(workoutInDb == null)
+                {
+                    //newWorkout.Exercises.Add(e);
+                }
                 db.SaveChanges();
             }
+            
             return RedirectToAction("Index");
             // if modelstate is invalid then => return View(new WorkoutExerciseDropdown() { Exercises = GetListOfExercisesForDropDown(), Workout = workout });
 
