@@ -18,6 +18,8 @@ namespace GymDiaryCodeFirst.Models
         public string Name { get; set; }
         public DateTime? Date { get; set; }
         public List<ExerciseStats> Exercises { get; set; }
-        
+
+        public bool IsBaseWorkout { get; set; }
+
     }
 }

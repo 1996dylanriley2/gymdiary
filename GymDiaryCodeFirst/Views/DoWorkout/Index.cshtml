@@ -12,7 +12,17 @@
     {
         @Html.HiddenFor(x => x.Exercises[i].ExerciseId);
         @Html.DisplayFor(x => x.Exercises[i].Exercise.Name);
-        @Html.EditorFor(x => x.Exercises[i].Reps, new { htmlAttributes = new { placeholder = "Reps" } });
+        for (var sets = 0; sets < Model.Exercises[i].Sets; sets++)
+        {
+            <div>
+                <h3>Set #@sets</h3>
+                @Html.EditorFor(x => x.Exercises[i].Reps, new { htmlAttributes = new { placeholder = "Reps" } });
+                @Html.EditorFor(x => x.Exercises[i].WeightInKg, new { htmlAttributes = new { placeholder = "Weight in kg" } });
+                @Html.EditorFor(x => x.Exercises[i].Minutes, new { htmlAttributes = new { placeholder = "Mins" } });
+            </div>
+            
+        }
+
     }
     <input type="submit" />
 }

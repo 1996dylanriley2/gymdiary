@@ -67,7 +67,7 @@ namespace GymDiaryCodeFirst.Views
         [ValidateAntiForgeryToken]
         public ActionResult Create(Workout workout)
         {
-            var newWorkout = new Workout() { Date = DateTime.Now, Name = workout.Name, UserId = workout.UserId, Exercises = new List<ExerciseStats>() };
+            var newWorkout = new Workout() { IsBaseWorkout = true,Date = DateTime.Now, Name = workout.Name, UserId = workout.UserId, Exercises = new List<ExerciseStats>() };
             foreach (var e in workout.Exercises)
             {
                 if (e.ExerciseId != 0)

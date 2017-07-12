@@ -12,6 +12,7 @@ namespace GymDiaryCodeFirst.Utils
         {
             foreach(var exercise in exercises)
             {
+                exercise.WorkoutId = 0;
                 exercise.Minutes = 0;
                 exercise.Reps = 0;
                 exercise.Sets = 0;

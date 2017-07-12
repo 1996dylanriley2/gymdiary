@@ -20,8 +20,9 @@ namespace GymDiaryCodeFirst.Models
         [ForeignKey("WorkoutId")]
         public Workout Workout { get; set; }
         public float? WeightInKg { get; set; }
+       
+        public int Sets { get; set; }
         public int? Reps { get; set; }
-        public int? Sets { get; set; }
         public int? Minutes { get; set; }
     }
 }

@@ -29,12 +29,14 @@ namespace GymDiaryCodeFirst.Controllers
             completedWorkout.Date = DateTime.Now;
             completedWorkout.Exercises = ResetStats.Reset(completedWorkout.Exercises);
             workout.WorkoutId = default(int);
+            completedWorkout.IsBaseWorkout = false;
 
             foreach(var exercise in completedWorkout.Exercises)
             {
                 foreach(var exercisePosted in workout.Exercises)
                 if(exercise.ExerciseId == exercisePosted.ExerciseId)
                     {
+                        exercise.WorkoutId = workout.WorkoutId;
                         exercise.Reps = exercisePosted.Reps;
                         exercise.Sets = exercisePosted.Sets;
                         exercise.Minutes = exercisePosted.Minutes;
