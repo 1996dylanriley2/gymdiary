@@ -13,8 +13,8 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Exercise</th>
-                <th>Sets</th>
+                <th>Exercise/Reps</th>
+                <th>Weight Kg</th>
                 <th>Reps</th>
                 <th>Duration</th>
             </tr>
@@ -22,18 +22,25 @@
         <tbody>
             @foreach (var exercise in Model)
             {
-                <tr>
-                    <td>
-                        @exercise.Exercise.Name
-                    </td>
+                for (var x = 0; x < exercise.ActualSets.Count; x++)
+                {
+                    var set = x + 1;
+                    <tr>
+                        <td>
+                            @exercise.Exercise.Name #@set
+                        </td>
+                        <td>
+                            @exercise.ActualSets[x].WeightInKg
+                        </td>
+                        <td>
+                            @exercise.ActualSets[x].Reps
+                        </td>
+                        <td>
+                            @exercise.ActualSets[x].Minutes
+                        </td>
+                    </tr>
+                }
 
-                    <td>
-                        @exercise.Reps
-                    </td>
-                    <td>
-                        @exercise.Sets
-                    </td>
-                </tr>
 
             }
         </tbody>

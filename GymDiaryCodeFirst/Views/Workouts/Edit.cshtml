@@ -1,23 +1,21 @@
 ﻿
 @model GymDiaryCodeFirst.Models.ViewModels.WorkoutExerciseDropdown
 
-<h2>Edit @ViewBag.Title</h2>
-
-
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h3>Workout</h3>  
-        @*<h4>@Model.Workout.Name</h4>*@      
+        <div>
+           <h2>
+               @Html.LabelFor(x => x.Workout.Name)
+               @Html.EditorFor(x => x.Workout.Name)
+           </h2> 
+        </div>
 
         @Html.HiddenFor(x => x.Workout.WorkoutId)
         @Html.HiddenFor(x => x.Workout.UserId)
         @Html.HiddenFor(x => x.Workout.Date)
-
-        @Html.LabelFor(x => x.Workout.Name)
-        @Html.EditorFor(x => x.Workout.Name)
         
         @using (Html.BeginForm("Edit", "Workouts", new { id = ViewBag.id }, FormMethod.Post))
         {
@@ -33,13 +31,15 @@
                     @:<div id="@id" class="hidden hiddenExercise exercise-container">
                 }
 
-                            @:Exercise:
+                            
                             @Html.HiddenFor(m => m.Workout.Exercises[i].ExerciseStatsId, new { @class = "id" })
-                            @Html.DropDownListFor(m => m.Workout.Exercises[i].ExerciseId, new SelectList(Model.Exercises, "Value", "Text", Model.Workout.Exercises[i].ExerciseId.ToString()), "--Select--")
-                            @Html.EditorFor(m => m.Workout.Exercises[i].WeightInKg)
-                            @Html.EditorFor(m => m.Workout.Exercises[i].Minutes)
-                            @Html.EditorFor(m => m.Workout.Exercises[i].Sets)
-                            @Html.EditorFor(m => m.Workout.Exercises[i].Reps)
+                            @Html.HiddenFor(m => m.Workout.Exercises[i].DesiredSetId)
+
+                            @Html.DropDownListFor(m => m.Workout.Exercises[i].ExerciseId, new SelectList(Model.Exercises, "Value", "Text", Model.Workout.Exercises[i].ExerciseId.ToString()), "--Exercise--")
+                            @Html.EditorFor(m => m.Workout.Exercises[i].DesiredSetCount, new { htmlAttributes = new { placeholder = "Sets" } })
+                            @Html.EditorFor(m => m.Workout.Exercises[i].DesiredSet.WeightInKg, new { htmlAttributes = new { placeholder = "Weight kg" } })
+                            @Html.EditorFor(m => m.Workout.Exercises[i].DesiredSet.Reps, new { htmlAttributes = new { placeholder = "Reps" } })
+                            @Html.EditorFor(m => m.Workout.Exercises[i].DesiredSet.Minutes, new { htmlAttributes = new { placeholder = "Mins" } })
                             <button type="button" class="cancel">x</button>
                         @:</div>
 

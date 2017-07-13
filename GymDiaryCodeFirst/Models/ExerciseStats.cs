@@ -13,16 +13,20 @@ namespace GymDiaryCodeFirst.Models
         public int ExerciseStatsId { get; set; }
         [Required]
         public int ExerciseId { get; set; }
-        
+        [ForeignKey("ExerciseId")]
         public Exercise Exercise { get; set; }
         [Required]
         public int WorkoutId { get; set; }
         [ForeignKey("WorkoutId")]
         public Workout Workout { get; set; }
-        public float? WeightInKg { get; set; }
-       
-        public int Sets { get; set; }
-        public int? Reps { get; set; }
-        public int? Minutes { get; set; }
+        // sets,reps, weight and mins are all changable mid-workout because you may start to tire on set 3 and drop the weight for the last few sets.
+        //Due to this it appears the exerciseStats needs own table to record each set. Therefor exerciseStats must contain a list of sets.
+        public int DesiredSetId { get; set; }
+        [ForeignKey("DesiredSetId")]
+        public Set DesiredSet { get; set; }
+        public int DesiredSetCount { get; set; }
+        public List<Set> ActualSets { get; set; }
+        
+
     }
 }

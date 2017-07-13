@@ -18,35 +18,50 @@ namespace GymDiaryCodeFirst.Controllers
         [HttpGet]
         public ActionResult Index(int id)
         {
-            var workout = GetWorkout.Get(id);
+            var workout = PopulateWorkout.PopulateEntireWorkout(id);
             return View(workout);
         }
 
         [HttpPost]
-        public ActionResult Index(Workout workout)
+        public ActionResult Index(Workout workoutCompletedByUser)
         {
-            var completedWorkout = GetWorkout.Get(workout.WorkoutId);
-            completedWorkout.Date = DateTime.Now;
-            completedWorkout.Exercises = ResetStats.Reset(completedWorkout.Exercises);
-            workout.WorkoutId = default(int);
-            completedWorkout.IsBaseWorkout = false;
+            //This method creates a copy of the baseworkout before filling in the blanks to make it a complete workout then saves to db.
+            //Cloning the baseworkout using workoutID
+            var baseWorkout = PopulateWorkout.PopulateEntireWorkout(workoutCompletedByUser.WorkoutId);
+            workoutCompletedByUser.Date = DateTime.Now;
+            workoutCompletedByUser.WorkoutId = default(int);
+            workoutCompletedByUser.IsBaseWorkout = false;
+            workoutCompletedByUser.Name = baseWorkout.Name;
+            workoutCompletedByUser.UserId = baseWorkout.UserId;
 
-            foreach(var exercise in completedWorkout.Exercises)
+            foreach(var exerciseCompletedByUser in workoutCompletedByUser.Exercises)
             {
-                foreach(var exercisePosted in workout.Exercises)
-                if(exercise.ExerciseId == exercisePosted.ExerciseId)
+                foreach(var baseExercise in baseWorkout.Exercises)
+                {
+                    //Note that in the workoutCompletedByUser the exerciseStatId that gets posted back is the one from the baseExercise.
+                    //This provides an if which enables us to copy over each piece of data correctly. This needs removing before saving to db though
+                    //otherwise it will over-write data in the baseworkout
+                    if(baseExercise.ExerciseStatsId == exerciseCompletedByUser.ExerciseStatsId)
                     {
-                        exercise.WorkoutId = workout.WorkoutId;
-                        exercise.Reps = exercisePosted.Reps;
-                        exercise.Sets = exercisePosted.Sets;
-                        exercise.Minutes = exercisePosted.Minutes;
+                        exerciseCompletedByUser.DesiredSet = baseExercise.DesiredSet;
+                        exerciseCompletedByUser.ExerciseId = baseExercise.ExerciseId;
+                        exerciseCompletedByUser.DesiredSetId = baseExercise.DesiredSetId;
+                        exerciseCompletedByUser.DesiredSetCount = baseExercise.DesiredSetCount;
+                        exerciseCompletedByUser.ExerciseStatsId = default(int);
                     }
+                }
+                
             }
 
-            db.Workouts.Add(completedWorkout);
+            db.Workouts.Add(workoutCompletedByUser);
             db.SaveChanges();
             
-            return View("CompletedWorkout", completedWorkout.Exercises);
+            foreach(var e in workoutCompletedByUser.Exercises)
+            {
+                e.Exercise = PopulateWorkout.PopulateExerciseType(e.ExerciseId);
+            }
+
+            return View("CompletedWorkout", workoutCompletedByUser.Exercises);
         }
     }
 }

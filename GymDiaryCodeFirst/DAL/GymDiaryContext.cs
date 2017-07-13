@@ -18,5 +18,6 @@ namespace GymDiaryCodeFirst.DAL
         public DbSet<Exercise> Exercises { get; set; }
         public DbSet<Workout> Workouts{ get; set; }
         public DbSet<ExerciseStats> ExerciseStats{ get; set; }
+        public DbSet<Set> Sets { get; set; }
     }
 }

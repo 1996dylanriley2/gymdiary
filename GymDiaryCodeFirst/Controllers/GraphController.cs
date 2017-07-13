@@ -26,8 +26,8 @@ namespace GymDiaryCodeFirst.Controllers
                 var exercisesInWorkout = db.ExerciseStats.Where(j => j.WorkoutId == workout.WorkoutId);
                 foreach (var exercise in exercisesInWorkout)
                 {
-                    data.x.Add((int)exercise.Reps);
-                    data.y.Add(workout.Date.Value.Month);
+                    //data.x.Add((int)exercise.Reps);
+                    //data.y.Add(workout.Date.Value.Month);
                 }
                 
 

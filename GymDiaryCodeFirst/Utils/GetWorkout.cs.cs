@@ -7,10 +7,10 @@ using System.Web;
 
 namespace GymDiaryCodeFirst.Utils
 {
-    public static class GetWorkout
+    public static class PopulateWorkout
     {
         private static GymDiaryContext db = new GymDiaryContext();
-        public static Workout Get(int id)
+        public static Workout PopulateEntireWorkout(int id)
         {
             var workout = db.Workouts.Single(x => x.WorkoutId == id);
             workout.Exercises = PopulateExerciseStats(id);
@@ -23,11 +23,25 @@ namespace GymDiaryCodeFirst.Utils
 
         public static List<ExerciseStats> PopulateExerciseStats(int id)
         {
-            return db.ExerciseStats.Where(x => x.WorkoutId == id).ToList();
-            
+
+            var exercises = db.ExerciseStats.Where(x => x.WorkoutId == id).ToList();
+            foreach(var e in exercises)
+            {
+                e.DesiredSet = PopulateDesiredSet(e.DesiredSetId);
+                //e.ActualSets = PopulateActualSets(e.ExerciseStatsId);
+            }
+            return exercises;
         }
 
-        private static Exercise PopulateExerciseType(int id)
+        public static Set PopulateDesiredSet(int setId)
+        {
+            return db.Sets.Single(x => x.SetId == setId);
+        }
+        //public static List<Set> PopulateActualSets(int exerciseStatsId)
+        //{
+
+        //}
+        public static Exercise PopulateExerciseType(int id)
         {
             return db.Exercises.Single(x => x.Id == id);
         }
