@@ -1,4 +1,5 @@
 ﻿using GymDiaryCodeFirst.Models;
+using GymDiaryCodeFirst.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -19,5 +20,6 @@ namespace GymDiaryCodeFirst.DAL
         public DbSet<Workout> Workouts{ get; set; }
         public DbSet<ExerciseStats> ExerciseStats{ get; set; }
         public DbSet<Set> Sets { get; set; }
+        public DbSet<GraphApiViewModel> ApiViewModel { get; set; }
     }
 }

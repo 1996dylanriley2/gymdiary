@@ -6,7 +6,7 @@ using System.Web;
 
 namespace GymDiaryCodeFirst.DAL
 {
-    public class ExerciseInitialiser : System.Data.Entity.DropCreateDatabaseAlways<GymDiaryContext>
+    public class ExerciseInitialiser : System.Data.Entity.DropCreateDatabaseIfModelChanges<GymDiaryContext>
     {
         protected override void Seed(GymDiaryContext context)
         {
@@ -26,6 +26,8 @@ namespace GymDiaryCodeFirst.DAL
             new Exercise{Name="Biceip Curl", PrimaryMuscleId=1, SecondaryMuscleId=2},
             new Exercise{Name="Reverse Biceip Curl", PrimaryMuscleId=1, SecondaryMuscleId=2},
             new Exercise{Name="Bench Press", PrimaryMuscleId=1, SecondaryMuscleId=2},
+            new Exercise{Name="squat", PrimaryMuscleId=3, SecondaryMuscleId=null},
+            new Exercise{Name="leg press", PrimaryMuscleId=3, SecondaryMuscleId=null}
 
             };
 

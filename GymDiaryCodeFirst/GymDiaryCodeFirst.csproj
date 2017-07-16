@@ -230,6 +230,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Muscle.cs" />
     <Compile Include="Models\Set.cs" />
+    <Compile Include="Models\ViewModels\GraphApiViewModel.cs" />
     <Compile Include="Models\ViewModels\WorkoutExerciseDropdown.cs" />
     <Compile Include="Models\Workout.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

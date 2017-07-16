@@ -55,9 +55,9 @@
     var data;
     $(document).ready(function () {
         $.ajax({
-            url: "/api/graph/get",
+            url: "/api/graph/get?primaryMuscleId=1",
             type: "Get",
-            success: function (d) { data = d; console.log(d); }
+            success: function (d) { data = JSON.parse(d); console.log(data); }
         });
     
         
