@@ -32,9 +32,9 @@ namespace GymDiaryCodeFirst.DAL
             };
 
             exercises.ForEach(e => context.Exercises.Add(e));
-            context.SaveChanges();            
+            context.SaveChanges();
 
-            var x = new Workout { Date = DateTime.Now,Name="Test Workout", UserId = "1a", Exercises = new List<ExerciseStats> { new ExerciseStats { ExerciseId = 1, DesiredSet = new Set { Reps= 2, WeightInKg=5}, DesiredSetCount = 10, WorkoutId = 1 } } };
+            var x = new Workout { Date = DateTime.Now, Name = "Test Workout", UserId = "1a", Exercises = new List<ExerciseStats> { new ExerciseStats { ExerciseId = 1, DesiredSet = new Set() { Reps = 2, WeightInKg = 5 }, DesiredSetCount = 10} } };
             var workouts = new List<Workout>
             {
                 x
@@ -44,9 +44,13 @@ namespace GymDiaryCodeFirst.DAL
             workouts.ForEach(e => context.Workouts.Add(e));
             context.SaveChanges();
 
-            var workoutStats = new List<ExerciseStats> { };
+            //var p = new Set() { Reps = 2, WeightInKg = 5};
+            //context.Sets.Add(p);
+            //context.SaveChanges();
 
-            workoutStats.ForEach(e => context.ExerciseStats.Add(e));
+            //p.ExerciseStatId = 1;
+            //context.ExerciseStats.Single(r => r.ExerciseStatsId == 1).DesiredSetId = p.SetId;
+            
             context.SaveChanges();
 
         }

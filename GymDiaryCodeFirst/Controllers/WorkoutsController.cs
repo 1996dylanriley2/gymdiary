@@ -81,6 +81,8 @@ namespace GymDiaryCodeFirst.Views
             {
                 if (e.ExerciseId != 0)
                 {
+                    //this adds the id in the sets correct exerciseId fk
+                   // e.DesiredSet.ExerciseStatId = e.ExerciseId;
                     newWorkout.Exercises.Add(e);
                 }    
             }

@@ -16,50 +16,101 @@ namespace GymDiaryCodeFirst.Controllers
     public class GraphController : ApiController
     {
         private GymDiaryContext db = new GymDiaryContext();
+
         public string Get([FromUri]int primaryMuscleId)
         {
-            //This for now will provide us with the past 8 workouts for that muscle group. I will work out an avg for reps/set and use that as the data point
-            //then it will give the point info in the hover box: this includes date,reps,sets,weight goal achieved or not.
-            //the axis will be strength/duration,time.
-
-            var userID = User.Identity.GetUserId();
-            var possibleExercises = db.Exercises.Where(x => x.PrimaryMuscleId == primaryMuscleId).ToList();
-            List<List<GraphApiViewModel>> listsToConvertToJson = new List<List<GraphApiViewModel>>();
-
-            //This loop gets the 8 most recent competed exercisedstats for the current user for all exercises within the correct  muscle group.
-            for (var exercise = 0; exercise < possibleExercises.Count; ++exercise)
+            var listOfDataForEachLine = new List<List<Tuple<int, DateTime, string>>>();
+            var exercises = GetPossibleExercisesIds(primaryMuscleId);
+            foreach(var exerciseId in exercises)
             {
-                var exerciseId = possibleExercises[exercise].Id;
-                //Need to now split the exercises up
-                var get8MostRecentForMuscleId = @"select top 8 result1.Date, result1.DesiredSetCount, result1.Minutes, result1.Name,result1.Reps,result1.WeightInKg,result1.Id
-                                from (select result.*
-                                from (select exerciseStats.*, Exercises.*,workouts.Date, [Sets].Minutes,[Sets].Reps,[Sets].WeightInKg
-	                                from Workouts as workouts
-	                                 full join ExerciseStats as exerciseStats on exercisestats.workoutId = workouts.WorkoutId
-	                                 full join Exercises on Exercises.Id = $$$
-	                                 full join [Sets] on [Sets].ExerciseStats_ExerciseStatsId = ExerciseStats.ExerciseStatsId
-	                                where workouts.UserId = '***' and PrimaryMuscleId = ### and Workouts.IsBaseWorkout = 0) as result
+               var lineData = FormatData(GetSetsData(8, exerciseId));
+            }
+            return JsonConvert.SerializeObject(listOfDataForEachLine, Formatting.Indented);
+        }
+        private List<int> GetPossibleExercisesIds(int primaryMuscleId)
+        {
+            var query = @"SELECT distinct *
+                          FROM Exercises
+                          full join ExerciseStats on ExerciseStats.ExerciseId = Exercises.Id
+                          full join Workouts on Workouts.WorkoutId = ExerciseStats.WorkoutId
+                          full join AspNetUsers on AspNetUsers.Id = Workouts.UserId
+                          where Exercises.PrimaryMuscleId = $$$ and Workouts.IsBaseWorkout = 0 and Workouts.UserId = '***'";
 
-                                where result.PrimaryMuscleId = ### ) as result1
-                                order by result1.Date DESC";
+            query = query.Replace("$$$", primaryMuscleId.ToString());
+            query = query.Replace("***", User.Identity.GetUserId());
 
-                get8MostRecentForMuscleId = get8MostRecentForMuscleId.Replace("$$$", exerciseId.ToString());
-                get8MostRecentForMuscleId = get8MostRecentForMuscleId.Replace("###", primaryMuscleId.ToString());
-                get8MostRecentForMuscleId = get8MostRecentForMuscleId.Replace("***", userID.ToString());
+            return db.Exercises.SqlQuery(query).Select(x => x.Id).Distinct().ToList();
+        }
+       
+        //This method gets X most recent exerciseStatsId for the specified exercise with the date.
+        public List<int> GetXMostRecentExerciseStatsIdsWithCompletionDate (int x, int exerciseId)
+        {
+            var query = @"select top $$$ *
+                        from Workouts
+                        full join ExerciseStats on Workouts.WorkoutId = ExerciseStats.WorkoutId
+                        where workouts.UserId = '***' and ExerciseStats.ExerciseId = ###
+                        order by Workouts.Date DESC";
 
-                List<GraphApiViewModel> latest8ExerciseStats = db.ApiViewModel.SqlQuery(get8MostRecentForMuscleId).ToList();
+            query = query.Replace("$$$", x.ToString());
+            query = query.Replace("***", User.Identity.GetUserId());
+            query = query.Replace("###", exerciseId.ToString());
 
-                listsToConvertToJson.Add(latest8ExerciseStats);
+            return db.ExerciseStats.SqlQuery(query).Select(e => e.ExerciseStatsId).ToList();
+        }
 
-                //if((exercise == 0 && possibleExercises.Count == 1) || possibleExercises.Count == 1 || exercise == possibleExercises.Count - 1)
-                //    json += JsonConvert.SerializeObject(latest8ExerciseStats, Formatting.Indented);
-                //else
-                //    json += JsonConvert.SerializeObject(latest8ExerciseStats, Formatting.Indented) + ",";
+        public List<List<Set>> GetSetsData(int countOfPreviousWorkoutsToShow, int exerciseId)
+        {
+            var exerciseStatsIds = GetXMostRecentExerciseStatsIdsWithCompletionDate(countOfPreviousWorkoutsToShow, exerciseId);
+            var setsDataPerExercise = new List<List<Set>>();
+
+            //adds new list of set data for each exercise for user.
+            foreach (var id in exerciseStatsIds)
+            {
+                var p = db.Sets.Where(x => x.ExerciseStat.ExerciseStatsId == id).ToList();
+                setsDataPerExercise.Add(p);
             }
 
-            var json = JsonConvert.SerializeObject(listsToConvertToJson);
 
-            return json;
+            return setsDataPerExercise;
         }
+
+        public List<Tuple<int, DateTime, string>> FormatData(List<List<Set>> ExerciseSets)
+        {
+            //int will be the average set/rep count (x axis)
+            //datetime is when the workout was completed
+            //string will be the info that appears in the tooltip on the graph
+            var datapoints = new List<Tuple<int, DateTime, string>>();
+
+            foreach(var exercise in ExerciseSets)
+            {
+                int sum = 0;
+                DateTime completionDate = new DateTime();
+                int exerciseStatIdForCompletionDate = 0;
+                string tooltipInfo = "Reps/Weight in Kgs";
+                foreach(var set in exercise)
+                {
+                    //tool tip info
+                    tooltipInfo += String.Format("\n{0} reps on {1}kg", set.Reps, set.WeightInKg);
+
+                    sum += set.Reps.Value;
+                    exerciseStatIdForCompletionDate = (int)set.ExerciseStat.ExerciseStatsId;
+                }
+                //the avg
+                sum = sum / exercise.Count + 1;
+
+                //the datetime
+                if (exerciseStatIdForCompletionDate > 0)
+                {
+                    var workoutId = db.ExerciseStats.Single(x => x.ExerciseStatsId == exerciseStatIdForCompletionDate).WorkoutId;
+                    completionDate = (DateTime)db.Workouts.Single(x => x.WorkoutId == workoutId).Date;
+                }
+
+                //construct the data to form a datapoint and add it to list
+                datapoints.Add(new Tuple<int, DateTime, string>(sum, completionDate, tooltipInfo));
+
+            }
+            return datapoints;
+        }
+        
     }
 }

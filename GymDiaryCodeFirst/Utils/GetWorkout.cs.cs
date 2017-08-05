@@ -27,7 +27,7 @@ namespace GymDiaryCodeFirst.Utils
             var exercises = db.ExerciseStats.Where(x => x.WorkoutId == id).ToList();
             foreach(var e in exercises)
             {
-                e.DesiredSet = PopulateDesiredSet(e.DesiredSetId);
+                e.DesiredSet = PopulateDesiredSet((int)e.DesiredSetId);
                 //e.ActualSets = PopulateActualSets(e.ExerciseStatsId);
             }
             return exercises;
