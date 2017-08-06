@@ -44,15 +44,6 @@ namespace GymDiaryCodeFirst.DAL
             workouts.ForEach(e => context.Workouts.Add(e));
             context.SaveChanges();
 
-            //var p = new Set() { Reps = 2, WeightInKg = 5};
-            //context.Sets.Add(p);
-            //context.SaveChanges();
-
-            //p.ExerciseStatId = 1;
-            //context.ExerciseStats.Single(r => r.ExerciseStatsId == 1).DesiredSetId = p.SetId;
-            
-            context.SaveChanges();
-
         }
     }
 }

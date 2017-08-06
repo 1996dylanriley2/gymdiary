@@ -21,7 +21,7 @@ namespace GymDiaryCodeFirst.Models
         public Workout Workout { get; set; }
         // sets,reps, weight and mins are all changable mid-workout because you may start to tire on set 3 and drop the weight for the last few sets.
         //Due to this it appears the exerciseStats needs own table to record each set. Therefor exerciseStats must contain a list of sets.
-        public int DesiredSetId { get; set; }
+        public int? DesiredSetId { get; set; }
         [ForeignKey("DesiredSetId")]
         public Set DesiredSet { get; set; }
         public int DesiredSetCount { get; set; }

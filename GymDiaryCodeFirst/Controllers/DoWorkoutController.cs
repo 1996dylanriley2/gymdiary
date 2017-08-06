@@ -27,6 +27,7 @@ namespace GymDiaryCodeFirst.Controllers
         {
             //This method creates a copy of the baseworkout before filling in the blanks to make it a complete workout then saves to db.
             //Cloning the baseworkout using workoutID
+            Workout viewModel;
             var baseWorkout = PopulateWorkout.PopulateEntireWorkout(workoutCompletedByUser.WorkoutId);
             workoutCompletedByUser.Date = DateTime.Now;
             workoutCompletedByUser.WorkoutId = default(int);
@@ -53,15 +54,26 @@ namespace GymDiaryCodeFirst.Controllers
                 
             }
 
+            viewModel = workoutCompletedByUser;
+
+            foreach (var x in workoutCompletedByUser.Exercises)
+            {
+                // desired set is causing sql error "unable to determin valid ordering".
+                //This is tryinig to update this item in db. Is it really nessesary?
+                // All we need is the id to be correct so that we can use that as the foreign key.
+                x.DesiredSet = null; 
+            }
+
+
             db.Workouts.Add(workoutCompletedByUser);
             db.SaveChanges();
             
-            foreach(var e in workoutCompletedByUser.Exercises)
+            foreach(var e in viewModel.Exercises)
             {
                 e.Exercise = PopulateWorkout.PopulateExerciseType(e.ExerciseId);
             }
 
-            return View("CompletedWorkout", workoutCompletedByUser.Exercises);
+            return View("CompletedWorkout", viewModel.Exercises);
         }
     }
 }

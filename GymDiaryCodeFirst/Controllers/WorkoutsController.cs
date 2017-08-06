@@ -87,6 +87,14 @@ namespace GymDiaryCodeFirst.Views
                 }    
             }
             db.Workouts.Add(newWorkout);
+            db.SaveChanges(); //note must be logged in to add workout.
+
+            //As the sets table data gets added before the exerciseStatId has been created in the ExerciseStats table we need to do add the ids after.
+            foreach (var wk in newWorkout.Exercises)
+            {
+                db.Sets.Single(x => x.SetId == wk.DesiredSetId).ExerciseStatId = wk.ExerciseStatsId;
+            }
+
             db.SaveChanges();
             return RedirectToAction("Index");
         }
