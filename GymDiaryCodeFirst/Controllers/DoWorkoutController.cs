@@ -22,27 +22,42 @@ namespace GymDiaryCodeFirst.Controllers
             return View(workout);
         }
 
+        /// <summary>
+        /// This methods job is to save the workout to the database and return the saved data to the view.
+        /// </summary>
+        /// <param name="workoutCompletedByUser"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult Index(Workout workoutCompletedByUser)
         {
-            //This method creates a copy of the baseworkout before filling in the blanks to make it a complete workout then saves to db.
-            //Cloning the baseworkout using workoutID
-            Workout viewModel;
-            var baseWorkout = PopulateWorkout.PopulateEntireWorkout(workoutCompletedByUser.WorkoutId);
-            workoutCompletedByUser.Date = DateTime.Now;
-            workoutCompletedByUser.WorkoutId = default(int);
-            workoutCompletedByUser.IsBaseWorkout = false;
-            workoutCompletedByUser.Name = baseWorkout.Name;
-            workoutCompletedByUser.UserId = baseWorkout.UserId;
+            SaveNewCompletedWorkout(workoutCompletedByUser);
 
-            foreach(var exerciseCompletedByUser in workoutCompletedByUser.Exercises)
+            var populatedWorkoutForView = workoutCompletedByUser;
+            foreach (var e in populatedWorkoutForView.Exercises)
             {
-                foreach(var baseExercise in baseWorkout.Exercises)
+                e.Exercise = PopulateWorkout.PopulateExerciseType(e.ExerciseId);
+            }
+
+            return View("CompletedWorkout", populatedWorkoutForView.Exercises);
+        }
+
+        public Workout CreateAndPopulateACopyOfBaseWorkout(Workout childWorkout)
+        {
+            var baseWorkout = PopulateWorkout.PopulateEntireWorkout(childWorkout.WorkoutId);
+            childWorkout.Date = DateTime.Now;
+            childWorkout.WorkoutId = default(int);
+            childWorkout.IsBaseWorkout = false;
+            childWorkout.Name = baseWorkout.Name;
+            childWorkout.UserId = baseWorkout.UserId;
+
+            foreach (var exerciseCompletedByUser in childWorkout.Exercises)
+            {
+                foreach (var baseExercise in baseWorkout.Exercises)
                 {
-                    //Note that in the workoutCompletedByUser the exerciseStatId that gets posted back is the one from the baseExercise.
+                    //Note that in the childWorkout the exerciseStatId that gets posted back is the one from the baseExercise.
                     //This provides an if which enables us to copy over each piece of data correctly. This needs removing before saving to db though
                     //otherwise it will over-write data in the baseworkout
-                    if(baseExercise.ExerciseStatsId == exerciseCompletedByUser.ExerciseStatsId)
+                    if (baseExercise.ExerciseStatsId == exerciseCompletedByUser.ExerciseStatsId)
                     {
                         exerciseCompletedByUser.DesiredSet = baseExercise.DesiredSet;
                         exerciseCompletedByUser.ExerciseId = baseExercise.ExerciseId;
@@ -51,29 +66,26 @@ namespace GymDiaryCodeFirst.Controllers
                         exerciseCompletedByUser.ExerciseStatsId = default(int);
                     }
                 }
-                
+
             }
 
-            viewModel = workoutCompletedByUser;
+            return childWorkout;
+        }
 
-            foreach (var x in workoutCompletedByUser.Exercises)
+        public void SaveNewCompletedWorkout(Workout workout)
+        {
+            var workoutForDb = CreateAndPopulateACopyOfBaseWorkout(workout);
+
+            //desiredset is causing sql error "unable to determin valid ordering"
+            //Because its tryinig to update this item in db which isn't nessesary as we are not modifying it.
+            //Therefor we only post back relivant info which in this case is the fk desiredsetid.
+            foreach (var x in workoutForDb.Exercises)
             {
-                // desired set is causing sql error "unable to determin valid ordering".
-                //This is tryinig to update this item in db. Is it really nessesary?
-                // All we need is the id to be correct so that we can use that as the foreign key.
-                x.DesiredSet = null; 
+                x.DesiredSet = null;
             }
 
-
-            db.Workouts.Add(workoutCompletedByUser);
+            db.Workouts.Add(workoutForDb);
             db.SaveChanges();
-            
-            foreach(var e in viewModel.Exercises)
-            {
-                e.Exercise = PopulateWorkout.PopulateExerciseType(e.ExerciseId);
-            }
-
-            return View("CompletedWorkout", viewModel.Exercises);
         }
     }
 }

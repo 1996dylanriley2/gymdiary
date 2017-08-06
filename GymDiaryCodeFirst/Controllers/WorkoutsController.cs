@@ -79,20 +79,20 @@ namespace GymDiaryCodeFirst.Views
                 };
             foreach (var e in workout.Exercises)
             {
-                if (e.ExerciseId != 0)
+                var exerciseHasBeenPopulatedInTheView = e.ExerciseId != 0;
+                if (exerciseHasBeenPopulatedInTheView)
                 {
-                    //this adds the id in the sets correct exerciseId fk
-                   // e.DesiredSet.ExerciseStatId = e.ExerciseId;
                     newWorkout.Exercises.Add(e);
                 }    
             }
+
             db.Workouts.Add(newWorkout);
             db.SaveChanges(); //note must be logged in to add workout.
 
-            //As the sets table data gets added before the exerciseStatId has been created in the ExerciseStats table we need to do add the ids after.
-            foreach (var wk in newWorkout.Exercises)
+            //IMPORTANT: ExerciseStatId Must be added into the sets table manually.
+            foreach (var e in newWorkout.Exercises)
             {
-                db.Sets.Single(x => x.SetId == wk.DesiredSetId).ExerciseStatId = wk.ExerciseStatsId;
+                db.Sets.Single(x => x.SetId == e.DesiredSetId).ExerciseStatId = e.ExerciseStatsId;
             }
 
             db.SaveChanges();
