@@ -13,17 +13,26 @@ using GymDiaryCodeFirst.Models.ViewModels;
 
 namespace GymDiaryCodeFirst.Controllers
 {
+    public class DataPoint
+    {
+        public float Y;
+        public string X;
+        public string ExerciseName;
+        public string tooltipMessage;
+
+    }
     public class GraphController : ApiController
     {
         private GymDiaryContext db = new GymDiaryContext();
 
         public string Get([FromUri]int primaryMuscleId)
         {
-            var listOfDataForEachLine = new List<List<Tuple<int, DateTime, string>>>();
+            var listOfDataForEachLine = new List<List<DataPoint>>();
             var exercises = GetPossibleExercisesIds(primaryMuscleId);
             foreach(var exerciseId in exercises)
             {
-               var lineData = FormatData(GetSetsData(8, exerciseId));
+               var lineData = FormatData(GetSetsData(8, exerciseId), exerciseId);
+               listOfDataForEachLine.Add(lineData);
             }
             return JsonConvert.SerializeObject(listOfDataForEachLine, Formatting.Indented);
         }
@@ -61,43 +70,50 @@ namespace GymDiaryCodeFirst.Controllers
         public List<List<Set>> GetSetsData(int countOfPreviousWorkoutsToShow, int exerciseId)
         {
             var exerciseStatsIds = GetXMostRecentExerciseStatsIdsWithCompletionDate(countOfPreviousWorkoutsToShow, exerciseId);
-            var setsDataPerExercise = new List<List<Set>>();
+            var setsPerExercisePerWorkout = new List<List<Set>>();
 
             //adds new list of set data for each exercise for user.
             foreach (var id in exerciseStatsIds)
             {
-                var p = db.Sets.Where(x => x.ExerciseStat.ExerciseStatsId == id).ToList();
-                setsDataPerExercise.Add(p);
+                var set = db.Sets.Where(x => x.ExerciseStat.ExerciseStatsId == id).ToList();
+                setsPerExercisePerWorkout.Add(set);
             }
 
 
-            return setsDataPerExercise;
+            return setsPerExercisePerWorkout;
         }
 
-        public List<Tuple<int, DateTime, string>> FormatData(List<List<Set>> ExerciseSets)
+        public string GetExerciseName(int exerciseId)
+        {
+           return db.Exercises.Single(x => x.Id == exerciseId).Name;
+        }
+        public List<DataPoint> FormatData(List<List<Set>> ExerciseSets, int exerciseId)
         {
             //int will be the average set/rep count (x axis)
             //datetime is when the workout was completed
             //string will be the info that appears in the tooltip on the graph
-            var datapoints = new List<Tuple<int, DateTime, string>>();
-
-            foreach(var exercise in ExerciseSets)
+            var datapoints = new List<DataPoint>();
+            var exerciseName = GetExerciseName(exerciseId);
+            foreach (var exercise in ExerciseSets)
             {
-                int sum = 0;
+                int totalOverallReps = 0;
+                float totalWeightLifted = 0;
+                float avgStrength;
                 DateTime completionDate = new DateTime();
                 int exerciseStatIdForCompletionDate = 0;
-                string tooltipInfo = "Reps/Weight in Kgs";
+                string tooltipInfo = "";
                 foreach(var set in exercise)
                 {
                     //tool tip info
-                    tooltipInfo += String.Format("\n{0} reps on {1}kg", set.Reps, set.WeightInKg);
+                    tooltipInfo += String.Format("Weight:{1}kg Reps:{0}<br />", set.Reps, set.WeightInKg);
 
-                    sum += set.Reps.Value;
+                    totalOverallReps += set.Reps.Value;
+                    totalWeightLifted += (set.WeightInKg.Value * (float)set.Reps.Value);
                     exerciseStatIdForCompletionDate = (int)set.ExerciseStat.ExerciseStatsId;
                 }
                 //the avg
-                sum = sum / exercise.Count + 1;
-
+                avgStrength = totalWeightLifted;
+                
                 //the datetime
                 if (exerciseStatIdForCompletionDate > 0)
                 {
@@ -106,8 +122,12 @@ namespace GymDiaryCodeFirst.Controllers
                 }
 
                 //construct the data to form a datapoint and add it to list
-                datapoints.Add(new Tuple<int, DateTime, string>(sum, completionDate, tooltipInfo));
-
+                datapoints.Add(new DataPoint() {
+                    Y = avgStrength,
+                    X = completionDate.ToString("yyyy,MM,dd,HH,mm,ss"),
+                    tooltipMessage = tooltipInfo,
+                    ExerciseName = exerciseName
+                });
             }
             return datapoints;
         }

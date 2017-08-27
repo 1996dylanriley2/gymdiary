@@ -19,6 +19,10 @@ namespace GymDiaryCodeFirst.Controllers
         public ActionResult Index(int id)
         {
             var workout = PopulateWorkout.PopulateEntireWorkout(id);
+            foreach(var e in workout.Exercises)
+            {
+                e.ActualSets = null;
+            }
             return View(workout);
         }
 
@@ -37,6 +41,15 @@ namespace GymDiaryCodeFirst.Controllers
             {
                 e.Exercise = PopulateWorkout.PopulateExerciseType(e.ExerciseId);
             }
+
+            var muscleIdsUsedInWorkout = new List<int>();
+            foreach(var exercise in populatedWorkoutForView.Exercises)
+            {
+                if(!muscleIdsUsedInWorkout.Contains(exercise.Exercise.PrimaryMuscleId))
+                    muscleIdsUsedInWorkout.Add(exercise.Exercise.PrimaryMuscleId);
+            }
+
+            ViewBag.MuscleIds = muscleIdsUsedInWorkout;
 
             return View("CompletedWorkout", populatedWorkoutForView.Exercises);
         }

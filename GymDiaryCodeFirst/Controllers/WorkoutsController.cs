@@ -20,7 +20,11 @@ namespace GymDiaryCodeFirst.Views
         // GET: Workouts
         public ActionResult Index()
         {
-            return View(db.Workouts.ToList());
+            var userId = User.Identity.GetUserId();
+            var baseWorkoutsByUser = db.Workouts
+                                    .Where(x => x.UserId == userId )
+                                    .Where(x => x.IsBaseWorkout == true);
+            return View(baseWorkoutsByUser.ToList());
         }
 
         // GET: Workouts/Details/5

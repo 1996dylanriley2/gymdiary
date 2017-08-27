@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Details";
+    var muscleIds = ViewBag.MuscleIds;
 }
 <script src="https://code.highcharts.com/highcharts.src.js"></script>
 <h2>Details</h2>
@@ -9,147 +10,186 @@
 <div>
     <h4>Workout</h4>
     <hr />
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Exercise/Reps</th>
-                <th>Weight Kg</th>
-                <th>Reps</th>
-                <th>Duration</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var exercise in Model)
+    
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
+        @{
+            int counter = 0;
+            foreach (var id in muscleIds)
+            {
+                counter++;
+                <li><a data-toggle="tab" href="#menu@(counter)">Muscle @(counter)</a></li>
+
+            }
+        }
+    </ul>
+
+    <div class="tab-content">
+        <div id="home" class="tab-pane fade in active">
+            <h3>Workout Summary</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Exercise/Reps</th>
+                        <th>Weight Kg</th>
+                        <th>Reps</th>
+                        <th>Duration</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var exercise in Model)
             {
                 for (var x = 0; x < exercise.ActualSets.Count; x++)
                 {
                     var set = x + 1;
-                    <tr>
-                        <td>
-                            @exercise.Exercise.Name #@set
-                        </td>
-                        <td>
-                            @exercise.ActualSets[x].WeightInKg
-                        </td>
-                        <td>
-                            @exercise.ActualSets[x].Reps
-                        </td>
-                        <td>
-                            @exercise.ActualSets[x].Minutes
-                        </td>
-                    </tr>
-                }
+                            <tr>
+                                <td>
+                                    @exercise.Exercise.Name #@set
+                                </td>
+                                <td>
+                                    @exercise.ActualSets[x].WeightInKg
+                                </td>
+                                <td>
+                                    @exercise.ActualSets[x].Reps
+                                </td>
+                                <td>
+                                    @exercise.ActualSets[x].Minutes
+                                </td>
+                            </tr>
+                        }
 
+
+                    }
+                </tbody>
+
+
+            </table>
+        </div>
+        @{
+                int count = 0;
+                foreach (var id in muscleIds)
+                {
+                    count++;
+                    var elId = "menu" + count.ToString();
+                <div id="@(elId)" class="tab-pane fade">
+                    <h3>Most recent exercises for specified muscle</h3>
+                    <div id="container@(id)" class="graphContainer" style="width: 800px; height: 800px; margin: 0 auto"></div>
+                </div>
 
             }
-        </tbody>
-
-
-    </table>
-
-    <div id="container" style="width: 550px; height: 400px; margin: 0 auto"></div>
+       }
+        
+    </div>
+</div>
+    <!--TODO: have a tab for each muscle with has a graph on-->
+    @*@foreach (var id in muscleIds)
+    {
+        <div id="container@(id)" class="graphContainer" style="width: 800px; height: 800px; margin: 0 auto"></div>
+    }*@
+    
 </div>
 
 <script>
-    var data;
     $(document).ready(function () {
-        $.ajax({
-            url: "/api/graph/get?primaryMuscleId=1",
-            type: "Get",
-            success: function (d) {
-                data = JSON.parse(d);
-                console.log(data);
-                var timeFormat = 'MM/DD/YYYY HH:mm';
-                var datapoints;
-
-                for (var x = 1; 1 < data.length; x++) {
-                    for (var k = 0; k < data[x].length; k++) {
-                        var dataset = data[x][k];
-                        var avg = (dataset.Reps * dataset.WeightInKg) / dataset.sets;
-                        console.log(avg);
-                    }
-                }
+        @{
+            foreach (var id in muscleIds)
+            {
+                @:createGraph(@(id));
             }
-        });
-        
-        var chart = {
-            type: 'spline'
-        };
-        var title = {
-            text: 'Monthly Average Temperature'   
-        };
-        var subtitle = {
-            text: 'Source: WorldClimate.com'
-        };
-        var xAxis = {
-            type: 'datetime',
-            dateTimeLabelFormats: { // don't display the dummy year
-                month: '%e. %b',
-                year: '%b'
-            },
-            title: {
-                text: 'Date'
-            }
-        };
-        var yAxis = {
-            title: {
-                text: 'Temperature (\xB0C)'
-            },
-            plotLines: [{
-                value: 0,
-                width: 1,
-                color: '#808080'
-            }]
-        };   
-
-        var tooltip = {
-            valueSuffix: '\xB0C'
         }
 
-        var legend = {
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'middle',
-            borderWidth: 0
-        };
+        function createGraph(id) {
+            $.ajax({
+                url: "/api/graph/get?primaryMuscleId=" + id,
+                type: "Get",
+                success: function (d) {
+                    data = JSON.parse(d);
+                    function addDateJsDateUTC(data) {
+                        for (exercise = 0; exercise < data.length; exercise++) {
+                            for (var dataPointCount = 0; dataPointCount < data[exercise].length; dataPointCount++) {
+                                var dataPoint = data[exercise][dataPointCount];
+                                var dateParts = dataPoint.X.split(",");
+                                var date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2], dateParts[3], dateParts[4], dateParts[5]);
+                                var dateAsUTC = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds());
+                                dataPoint.utc = dateAsUTC;
+                            }
+                        }
+                        return data;
+                    }
 
-        var series =  [
-           {
-               name: 'Tokyo',
-               data: [{ y: 1, x: 2, d: 99 }, { y: 2, x: 4, d: 99 }, { y: 4, x: 5, d: 99 }, { y:6, x: 6, d: 99 }
-                   //y: [3,2,3,5,4,7],
-                   //myData: 'firstPoint',
-                   //myOtherData: 'Other first data'
-               ]
-           }, 
-           {
-               name: 'New York',
-               data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8,
-                  24.1, 20.1, 14.1, 8.6, 2.5]
-           }, 
-           {
-               name: 'Berlin',
-               data: [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6,
-                  17.9, 14.3, 9.0, 3.9, 1.0]
-           }, 
-           {
-               name: 'London',
-               data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 
-                  16.6, 14.2, 10.3, 6.6, 4.8]
-           }
-        ];
+                    function formatToSeriesData(data) {
+                        for (var e = 0; e < data.length; e++) {
+                            for (var p = 0; p < data[e].length; p++) {
+                                var datapoint = data[e][p];
+                                data[e][p] = { x: datapoint.utc, y: datapoint.Y, msg: datapoint.tooltipMessage, exercise: datapoint.ExerciseName };
+                            }
+                        }
+                        return data;
+                    }
 
-        var json = {};
+                    function makeSeriseForEachExercise(data) {
+                        var series = [];
+                        for (var e = 0; e < data.length; e++) {
+                            var seriesItem = {};
+                            seriesItem.name = data[e][1].exercise;
+                            seriesItem.data = data[e];
+                            series.push(seriesItem);
+                        }
+                        return series;
+                    }
 
-        json.title = title;
-        json.subtitle = subtitle;
-        json.xAxis = xAxis;
-        json.yAxis = yAxis;
-        json.tooltip = tooltip;
-        json.legend = legend;
-        json.series = series;
+                    data = addDateJsDateUTC(data);
+                    data = formatToSeriesData(data);
+                    console.log(makeSeriseForEachExercise(data));
+                    data = makeSeriseForEachExercise(data); //data[0];
 
-        $('#container').highcharts(json);
+                    Highcharts.chart('container'+id, {
+                        chart: {
+                            type: 'spline'
+                        },
+                        title: {
+                            text: ""
+                        },
+                        subtitle: {
+                            text: 'Irregular time data in Highcharts JS'
+                        },
+                        xAxis: {
+                            type: 'datetime',
+                            dateTimeLabelFormats: { // don't display the dummy year
+                                month: '%e. %b',
+                                year: '%b'
+                            },
+                            title: {
+                                text: 'Date'
+                            }
+                        },
+                        yAxis: {
+                            title: {
+                                text: 'Sum of weight lifted'
+                            },
+                            min: 0
+                        },
+                        tooltip: {
+                            headerFormat: '<b> {point.key} </b><br>',
+                            pointFormat: '{point.msg}'
+                        },
+
+                        plotOptions: {
+                            spline: {
+                                marker: {
+                                    enabled: true
+                                }
+                            }
+                        },
+
+                        series: data
+                    });
+
+                }
+            });
+        }
+        
     });
         
 </script>

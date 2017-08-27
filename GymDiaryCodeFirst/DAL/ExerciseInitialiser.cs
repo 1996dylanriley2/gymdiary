@@ -34,7 +34,7 @@ namespace GymDiaryCodeFirst.DAL
             exercises.ForEach(e => context.Exercises.Add(e));
             context.SaveChanges();
 
-            var x = new Workout { Date = DateTime.Now, Name = "Test Workout", UserId = "1a", Exercises = new List<ExerciseStats> { new ExerciseStats { ExerciseId = 1, DesiredSet = new Set() { Reps = 2, WeightInKg = 5 }, DesiredSetCount = 10} } };
+            var x = new Workout { Date = DateTime.Now, Name = "Test Workout", UserId = "1a", Exercises = new List<ExerciseStats> { new ExerciseStats { ExerciseId = 1, DesiredSet = new Set() { Reps = 2, WeightInKg = 5 }, DesiredSetCount = 3} } };
             var workouts = new List<Workout>
             {
                 x
