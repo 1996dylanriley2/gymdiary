@@ -2,12 +2,12 @@
 
 @{
     ViewBag.Title = "Details";
-    var muscleIds = ViewBag.MuscleIds;
+    var muscleIdAndNamePairs = ViewBag.Muscles;
 }
 <script src="https://code.highcharts.com/highcharts.src.js"></script>
 <h2>Details</h2>
 
-<div>
+<div class="summary-page-container">
     <h4>Workout</h4>
     <hr />
     
@@ -16,10 +16,10 @@
         <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
         @{
             int counter = 0;
-            foreach (var id in muscleIds)
+            foreach (var pair in muscleIdAndNamePairs)
             {
                 counter++;
-                <li><a data-toggle="tab" href="#menu@(counter)">Muscle @(counter)</a></li>
+                <li><a data-toggle="tab" href="#menu@(counter)">@(pair.Item2)</a></li>
 
             }
         }
@@ -67,14 +67,16 @@
             </table>
         </div>
         @{
-                int count = 0;
-                foreach (var id in muscleIds)
-                {
-                    count++;
-                    var elId = "menu" + count.ToString();
+            int count = 0;
+            foreach (var pair in muscleIdAndNamePairs)
+            {
+                count++;
+                var elId = "menu" + count.ToString();
+                var id = pair.Item1;
+                var name = pair.Item2;
                 <div id="@(elId)" class="tab-pane fade">
-                    <h3>Most recent exercises for specified muscle</h3>
-                    <div id="container@(id)" class="graphContainer" style="width: 800px; height: 800px; margin: 0 auto"></div>
+                    <h3>Most recent exercises for @(name)</h3>
+                    <div id="container@(id)" class="graphContainer"></div>
                 </div>
 
             }
@@ -83,7 +85,7 @@
     </div>
 </div>
     <!--TODO: have a tab for each muscle with has a graph on-->
-    @*@foreach (var id in muscleIds)
+    @*@foreach (var id in muscleIdAndNamePair)
     {
         <div id="container@(id)" class="graphContainer" style="width: 800px; height: 800px; margin: 0 auto"></div>
     }*@
@@ -93,9 +95,9 @@
 <script>
     $(document).ready(function () {
         @{
-            foreach (var id in muscleIds)
+            foreach (var id in muscleIdAndNamePairs)
             {
-                @:createGraph(@(id));
+                @:createGraph(@(id.Item1));
             }
         }
 

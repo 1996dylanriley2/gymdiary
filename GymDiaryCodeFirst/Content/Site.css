@@ -22,5 +22,17 @@ select,
 textarea {
     max-width: 280px;
 }
+.graphContainer{
+        width:500px;
+        height:500px;
+        margin: 0 auto;
+    }
+@media only screen and (max-width: 767px) {
+    .graphContainer{
+        width:300px;
+        height:300px;
+        margin: 0 auto;
+    }
+}
 
 

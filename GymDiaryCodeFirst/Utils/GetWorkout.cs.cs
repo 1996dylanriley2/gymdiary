@@ -43,7 +43,10 @@ namespace GymDiaryCodeFirst.Utils
         //}
         public static Exercise PopulateExerciseType(int id)
         {
-            return db.Exercises.Single(x => x.Id == id);
+            var exercise = db.Exercises.Single(x => x.Id == id);
+            exercise.PrimaryMuscle = db.Muscles.Single(x => x.Id == exercise.PrimaryMuscleId);
+            //exercise.SecondaryMuscle = db.Muscles.Single(x => x.Id == exercise.SecondaryMuscleId);
+            return exercise;
         }
     }
 }

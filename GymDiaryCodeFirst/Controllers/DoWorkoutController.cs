@@ -42,14 +42,18 @@ namespace GymDiaryCodeFirst.Controllers
                 e.Exercise = PopulateWorkout.PopulateExerciseType(e.ExerciseId);
             }
 
-            var muscleIdsUsedInWorkout = new List<int>();
+            var muscleIdsAndNamesUsedInWorkout = new List<Tuple<int,string>>();
             foreach(var exercise in populatedWorkoutForView.Exercises)
             {
-                if(!muscleIdsUsedInWorkout.Contains(exercise.Exercise.PrimaryMuscleId))
-                    muscleIdsUsedInWorkout.Add(exercise.Exercise.PrimaryMuscleId);
+                var idNamePair = new Tuple<int, string>(exercise.Exercise.PrimaryMuscleId, exercise.Exercise.PrimaryMuscle.Name);
+                if (!muscleIdsAndNamesUsedInWorkout.Contains(idNamePair))
+                {
+                    muscleIdsAndNamesUsedInWorkout.Add(idNamePair);
+                }
+                    
             }
 
-            ViewBag.MuscleIds = muscleIdsUsedInWorkout;
+            ViewBag.Muscles = muscleIdsAndNamesUsedInWorkout;
 
             return View("CompletedWorkout", populatedWorkoutForView.Exercises);
         }
