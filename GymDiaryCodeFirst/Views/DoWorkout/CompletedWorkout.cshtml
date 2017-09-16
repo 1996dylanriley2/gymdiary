@@ -5,10 +5,9 @@
     var muscleIdAndNamePairs = ViewBag.Muscles;
 }
 <script src="https://code.highcharts.com/highcharts.src.js"></script>
-<h2>Details</h2>
+<h2>Workout Details</h2>
 
 <div class="summary-page-container">
-    <h4>Workout</h4>
     <hr />
     
 
@@ -75,7 +74,7 @@
                 var id = pair.Item1;
                 var name = pair.Item2;
                 <div id="@(elId)" class="tab-pane fade">
-                    <h3>Most recent exercises for @(name)</h3>
+                    <h4>Most recent exercises for @(name)</h4>
                     <div id="container@(id)" class="graphContainer"></div>
                 </div>
 
@@ -154,7 +153,7 @@
                             text: ""
                         },
                         subtitle: {
-                            text: 'Irregular time data in Highcharts JS'
+                            text: ''
                         },
                         xAxis: {
                             type: 'datetime',
