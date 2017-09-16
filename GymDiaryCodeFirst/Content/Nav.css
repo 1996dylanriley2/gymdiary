@@ -27,6 +27,18 @@
     #menu-container-mobile{
         display:none;
     }
+    .desktop-list{
+        display:inline;
+    }
+    .mobile-list{
+        display:none;
+    }
+    .desktop-link{
+        display:inline;
+    }
+    .mobile-link{
+        display:none;
+    }
 }
 /*This will show mobile*/
 @media only screen and (max-width: 767px) {
@@ -103,4 +115,16 @@
    footer{
        display:inline-block;
    }
+   .desktop-list{
+        display:none;
+    }
+    .mobile-list{
+        display:inline;
+    }
+    .desktop-link{
+        display:none;
+    }
+    .mobile-link{
+        display:inline;
+    }
 }

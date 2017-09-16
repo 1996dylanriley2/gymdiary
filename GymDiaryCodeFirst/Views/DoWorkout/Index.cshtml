@@ -16,7 +16,7 @@
         for (var j = 0; j < Model.Exercises[i].DesiredSetCount; j++)
         {
             <div>
-                <h5>Set #@j</h5>
+                <h5>Set #@(j+1)</h5>
                 @Html.EditorFor(x => x.Exercises[i].ActualSets[j].Reps, new { htmlAttributes = new { placeholder = "Reps" } })
                 @Html.EditorFor(x => x.Exercises[i].ActualSets[j].WeightInKg, new { htmlAttributes = new { placeholder = "Weight in kg" } })
                 @Html.EditorFor(x => x.Exercises[i].ActualSets[j].Minutes, new { htmlAttributes = new { placeholder = "Mins" } })

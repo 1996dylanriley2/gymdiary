@@ -4,29 +4,35 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
+            <h1>Workouts </h1>
+            @Html.ActionLink("Create New", "Create")
+    </th>
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Name)
+            <strong>@Html.DisplayFor(modelItem => item.Name)</strong>
+            <div class="mobile-list pull-right">
+                @Html.ActionLink(" ", "Index", "DoWorkout", new { id = item.WorkoutId }, new { @class = "btn btn-xs btn-success glyphicon glyphicon-play" })
+                @Html.ActionLink(" ", "Details", new { id = item.WorkoutId }, new { @class = "btn btn-info btn-xs glyphicon glyphicon-eye-open" })
+                @Html.ActionLink(" ", "Edit", new { id = item.WorkoutId }, new { @class = "btn btn-warning btn-xs glyphicon glyphicon-pencil" })
+                @Html.ActionLink(" ", "Delete", new { id = item.WorkoutId }, new { @class = "btn btn-danger btn-xs glyphicon glyphicon-remove" })
+            </div>
         </td>
         <td>
-            @Html.ActionLink("Do Workout", "Index", "DoWorkout", new { id = item.WorkoutId }, new { }) |
-            @Html.ActionLink("Edit", "Edit", new { id=item.WorkoutId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.WorkoutId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.WorkoutId })
+            <div class="desktop-list">
+                @Html.ActionLink("Do Workout", "Index", "DoWorkout", new { id = item.WorkoutId }, new { }) |
+                @Html.ActionLink("Edit", "Edit", new { id = item.WorkoutId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.WorkoutId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.WorkoutId })
+            </div>
+                       
         </td>
     </tr>
 }
