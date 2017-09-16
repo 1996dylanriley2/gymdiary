@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using GymDiaryCodeFirst.DAL;
 using GymDiaryCodeFirst.Models;
 using GymDiaryCodeFirst.Models.ViewModels;
+using Microsoft.AspNet.Identity;
 
 namespace GymDiaryCodeFirst.Views
 {
@@ -19,7 +20,11 @@ namespace GymDiaryCodeFirst.Views
         // GET: Workouts
         public ActionResult Index()
         {
-            return View(db.Workouts.ToList());
+            var userId = User.Identity.GetUserId();
+            var baseWorkoutsByUser = db.Workouts
+                                    .Where(x => x.UserId == userId )
+                                    .Where(x => x.IsBaseWorkout == true);
+            return View(baseWorkoutsByUser.ToList());
         }
 
         // GET: Workouts/Details/5
@@ -36,16 +41,30 @@ namespace GymDiaryCodeFirst.Views
             }
             foreach(var item in workout)
             {
+                //use workout class and use addexercisesfromdb()
                 item.Exercise = db.Exercises.Find(item.ExerciseId);
                 item.Workout = db.Workouts.Find(item.WorkoutId);
+                item.DesiredSet = db.Sets.Find(item.DesiredSetId);
             }
+            
             return View(workout);
         }
 
         // GET: Workouts/Create
         public ActionResult Create()
         {
-            return View();
+            //TODO: refactor this controller as its duplicates alot of the code in edit
+            var workout = new Workout() {UserId = User.Identity.GetUserId(), Date = DateTime.Now, };
+
+            workout.Exercises = new List<ExerciseStats>();
+            workout.Exercises = AddEmptyExercises(workout.Exercises);
+
+            var viewModel = new WorkoutExerciseDropdown();
+
+            viewModel.Exercises = GetListOfExercisesForDropDown();
+            viewModel.Workout = workout;
+
+            return View("Edit",viewModel);
         }
 
         // POST: Workouts/Create
@@ -53,16 +72,35 @@ namespace GymDiaryCodeFirst.Views
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "WorkoutId,UserId,Name,Date")] Workout workout)
+        public ActionResult Create(Workout workout)
         {
-            if (ModelState.IsValid)
+            var newWorkout = new Workout() {
+                IsBaseWorkout = true,
+                Date = DateTime.Now,
+                Name = workout.Name,
+                UserId = workout.UserId,
+                Exercises = new List<ExerciseStats>(),
+                };
+            foreach (var e in workout.Exercises)
             {
-                db.Workouts.Add(workout);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var exerciseHasBeenPopulatedInTheView = e.ExerciseId != 0;
+                if (exerciseHasBeenPopulatedInTheView)
+                {
+                    newWorkout.Exercises.Add(e);
+                }    
             }
 
-            return View(workout);
+            db.Workouts.Add(newWorkout);
+            db.SaveChanges(); //note must be logged in to add workout.
+
+            //IMPORTANT: ExerciseStatId Must be added into the sets table manually.
+            foreach (var e in newWorkout.Exercises)
+            {
+                db.Sets.Single(x => x.SetId == e.DesiredSetId).ExerciseStatId = e.ExerciseStatsId;
+            }
+
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         public ActionResult Edit(int? id)
@@ -102,37 +140,38 @@ namespace GymDiaryCodeFirst.Views
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, Workout workout)
         {
+            //setid is null
             var workoutInDb = db.Workouts.Single(x => x.WorkoutId == workout.WorkoutId);
+            
             workoutInDb.Name = workout.Name;
 
-               
+
             foreach (var e in workout.Exercises)
-            { 
+            {
                 //Modifies any existing exerciseStats
                 if (e.ExerciseStatsId != 0)
                 {
                     var eInDb = db.ExerciseStats.Single(x => x.ExerciseStatsId == e.ExerciseStatsId);
-
+                    var desiredSetInDb = db.Sets.Single(x => x.SetId == e.DesiredSetId);
                     if (e.ExerciseId == 0)
                         db.ExerciseStats.Remove(eInDb);
                     else
                     {
                         eInDb.ExerciseId = e.ExerciseId;
-                        eInDb.WeightInKg = e.WeightInKg;
-                        eInDb.Sets = e.Sets;
-                        eInDb.Reps = e.Reps;
-                        eInDb.Minutes = e.Minutes;
+                        desiredSetInDb.WeightInKg = e.DesiredSet.WeightInKg;
+                        eInDb.DesiredSetCount = e.DesiredSetCount;
+                        desiredSetInDb.Reps = e.DesiredSet.Reps;
+                        desiredSetInDb.Minutes = e.DesiredSet.Minutes;
                     }
-                    db.SaveChanges(); 
-                }        
+                    db.SaveChanges();
+                }
                 else if (e.ExerciseId != 0)
                 {
                     workoutInDb.Exercises.Add(e);
-                } 
-                        
-                
+                }
                 db.SaveChanges();
             }
+
             return RedirectToAction("Index");
             // if modelstate is invalid then => return View(new WorkoutExerciseDropdown() { Exercises = GetListOfExercisesForDropDown(), Workout = workout });
 
@@ -140,14 +179,17 @@ namespace GymDiaryCodeFirst.Views
 
         public Workout AddExercisesToWorkoutFromDB(Workout workout)
         {
+            //TODO: use the untils instead of this class
             workout.Exercises = db.ExerciseStats.Where(e => e.WorkoutId == workout.WorkoutId).ToList();
 
             foreach (var item in workout.Exercises)
             {
                 item.Exercise = db.Exercises.Find(item.ExerciseId);
                 item.Workout = db.Workouts.Find(item.WorkoutId);
+                item.DesiredSet = db.Sets.Find(item.DesiredSetId);
             }
             return workout;
+
         }
         public IEnumerable<SelectListItem> GetListOfExercisesForDropDown()
         {

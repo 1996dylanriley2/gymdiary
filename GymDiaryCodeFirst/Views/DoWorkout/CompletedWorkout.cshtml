@@ -1,0 +1,196 @@
+﻿@model List<GymDiaryCodeFirst.Models.ExerciseStats>
+
+@{
+    ViewBag.Title = "Details";
+    var muscleIdAndNamePairs = ViewBag.Muscles;
+}
+<script src="https://code.highcharts.com/highcharts.src.js"></script>
+<h2>Workout Details</h2>
+
+<div class="summary-page-container">
+    <hr />
+    
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
+        @{
+            int counter = 0;
+            foreach (var pair in muscleIdAndNamePairs)
+            {
+                counter++;
+                <li><a data-toggle="tab" href="#menu@(counter)">@(pair.Item2)</a></li>
+
+            }
+        }
+    </ul>
+
+    <div class="tab-content">
+        <div id="home" class="tab-pane fade in active">
+            <h3>Workout Summary</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Exercise/Reps</th>
+                        <th>Weight Kg</th>
+                        <th>Reps</th>
+                        <th>Duration</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var exercise in Model)
+            {
+                for (var x = 0; x < exercise.ActualSets.Count; x++)
+                {
+                    var set = x + 1;
+                            <tr>
+                                <td>
+                                    @exercise.Exercise.Name #@set
+                                </td>
+                                <td>
+                                    @exercise.ActualSets[x].WeightInKg
+                                </td>
+                                <td>
+                                    @exercise.ActualSets[x].Reps
+                                </td>
+                                <td>
+                                    @exercise.ActualSets[x].Minutes
+                                </td>
+                            </tr>
+                        }
+
+
+                    }
+                </tbody>
+
+
+            </table>
+        </div>
+        @{
+            int count = 0;
+            foreach (var pair in muscleIdAndNamePairs)
+            {
+                count++;
+                var elId = "menu" + count.ToString();
+                var id = pair.Item1;
+                var name = pair.Item2;
+                <div id="@(elId)" class="tab-pane fade">
+                    <h4>Most recent exercises for @(name)</h4>
+                    <div id="container@(id)" class="graphContainer"></div>
+                </div>
+
+            }
+       }
+        
+    </div>
+</div>
+    <!--TODO: have a tab for each muscle with has a graph on-->
+    @*@foreach (var id in muscleIdAndNamePair)
+    {
+        <div id="container@(id)" class="graphContainer" style="width: 800px; height: 800px; margin: 0 auto"></div>
+    }*@
+    
+</div>
+
+<script>
+    $(document).ready(function () {
+        @{
+            foreach (var id in muscleIdAndNamePairs)
+            {
+                @:createGraph(@(id.Item1));
+            }
+        }
+
+        function createGraph(id) {
+            $.ajax({
+                url: "/api/graph/get?primaryMuscleId=" + id,
+                type: "Get",
+                success: function (d) {
+                    data = JSON.parse(d);
+                    function addDateJsDateUTC(data) {
+                        for (exercise = 0; exercise < data.length; exercise++) {
+                            for (var dataPointCount = 0; dataPointCount < data[exercise].length; dataPointCount++) {
+                                var dataPoint = data[exercise][dataPointCount];
+                                var dateParts = dataPoint.X.split(",");
+                                var date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2], dateParts[3], dateParts[4], dateParts[5]);
+                                var dateAsUTC = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds());
+                                dataPoint.utc = dateAsUTC;
+                            }
+                        }
+                        return data;
+                    }
+
+                    function formatToSeriesData(data) {
+                        for (var e = 0; e < data.length; e++) {
+                            for (var p = 0; p < data[e].length; p++) {
+                                var datapoint = data[e][p];
+                                data[e][p] = { x: datapoint.utc, y: datapoint.Y, msg: datapoint.tooltipMessage, exercise: datapoint.ExerciseName };
+                            }
+                        }
+                        return data;
+                    }
+
+                    function makeSeriseForEachExercise(data) {
+                        var series = [];
+                        for (var e = 0; e < data.length; e++) {
+                            var seriesItem = {};
+                            seriesItem.name = data[e][1].exercise;
+                            seriesItem.data = data[e];
+                            series.push(seriesItem);
+                        }
+                        return series;
+                    }
+
+                    data = addDateJsDateUTC(data);
+                    data = formatToSeriesData(data);
+                    console.log(makeSeriseForEachExercise(data));
+                    data = makeSeriseForEachExercise(data); //data[0];
+
+                    Highcharts.chart('container'+id, {
+                        chart: {
+                            type: 'spline'
+                        },
+                        title: {
+                            text: ""
+                        },
+                        subtitle: {
+                            text: ''
+                        },
+                        xAxis: {
+                            type: 'datetime',
+                            dateTimeLabelFormats: { // don't display the dummy year
+                                month: '%e. %b',
+                                year: '%b'
+                            },
+                            title: {
+                                text: 'Date'
+                            }
+                        },
+                        yAxis: {
+                            title: {
+                                text: 'Sum of weight lifted'
+                            },
+                            min: 0
+                        },
+                        tooltip: {
+                            headerFormat: '<b> {point.key} </b><br>',
+                            pointFormat: '{point.msg}'
+                        },
+
+                        plotOptions: {
+                            spline: {
+                                marker: {
+                                    enabled: true
+                                }
+                            }
+                        },
+
+                        series: data
+                    });
+
+                }
+            });
+        }
+        
+    });
+        
+</script>

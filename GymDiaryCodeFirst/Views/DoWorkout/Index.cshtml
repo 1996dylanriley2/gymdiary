@@ -1,0 +1,30 @@
+﻿@model GymDiaryCodeFirst.Models.Workout
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Workout In Progess...</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(x => x.WorkoutId);
+    for (int i = 0; i < Model.Exercises.Count; i++)
+    {
+        @Html.HiddenFor(x => x.Exercises[i].ExerciseId);
+        @Html.HiddenFor(x => x.Exercises[i].ExerciseStatsId);
+        <h4>@Html.DisplayFor(x => x.Exercises[i].Exercise.Name)</h4> 
+        for (var j = 0; j < Model.Exercises[i].DesiredSetCount; j++)
+        {
+            <div>
+                <h5>Set #@j</h5>
+                @Html.EditorFor(x => x.Exercises[i].ActualSets[j].Reps, new { htmlAttributes = new { placeholder = "Reps" } })
+                @Html.EditorFor(x => x.Exercises[i].ActualSets[j].WeightInKg, new { htmlAttributes = new { placeholder = "Weight in kg" } })
+                @Html.EditorFor(x => x.Exercises[i].ActualSets[j].Minutes, new { htmlAttributes = new { placeholder = "Mins" } })
+            </div>
+            
+        }
+
+    }
+    <input type="submit" />
+}
+

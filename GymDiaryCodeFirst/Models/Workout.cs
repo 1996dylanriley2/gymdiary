@@ -12,12 +12,14 @@ namespace GymDiaryCodeFirst.Models
     {
         [Key]
         public int WorkoutId { get; set; }
-        public int? UserId { get; set; }
-        //public ApplicationUser User { get; set; }
+        [Required]
+        public string UserId { get; set; }
         [Display(Name = "Workout Name")]
         public string Name { get; set; }
         public DateTime? Date { get; set; }
         public List<ExerciseStats> Exercises { get; set; }
-        
+
+        public bool IsBaseWorkout { get; set; }
+
     }
 }
