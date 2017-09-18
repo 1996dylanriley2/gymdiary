@@ -7,24 +7,69 @@
 
 @using (Html.BeginForm())
 {
+    
     @Html.HiddenFor(x => x.WorkoutId);
     for (int i = 0; i < Model.Exercises.Count; i++)
     {
-        @Html.HiddenFor(x => x.Exercises[i].ExerciseId);
-        @Html.HiddenFor(x => x.Exercises[i].ExerciseStatsId);
-        <h4>@Html.DisplayFor(x => x.Exercises[i].Exercise.Name)</h4> 
-        for (var j = 0; j < Model.Exercises[i].DesiredSetCount; j++)
-        {
-            <div>
-                <h5>Set #@(j+1)</h5>
-                @Html.EditorFor(x => x.Exercises[i].ActualSets[j].Reps, new { htmlAttributes = new { placeholder = "Reps" } })
-                @Html.EditorFor(x => x.Exercises[i].ActualSets[j].WeightInKg, new { htmlAttributes = new { placeholder = "Weight in kg" } })
-                @Html.EditorFor(x => x.Exercises[i].ActualSets[j].Minutes, new { htmlAttributes = new { placeholder = "Mins" } })
+        var showFirstPage = i == 0 ? "" : "hide";
+        <div class="virtual-page @(showFirstPage) " id="exercise@(i)">
+
+            @Html.HiddenFor(x => x.Exercises[i].ExerciseId)
+            @Html.HiddenFor(x => x.Exercises[i].ExerciseStatsId)
+            <h4>@Html.DisplayFor(x => x.Exercises[i].Exercise.Name)</h4>
+            @for (var j = 0; j < Model.Exercises[i].DesiredSetCount; j++)
+                    {
+                <h5>Set #@(j + 1)</h5>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                @Html.EditorFor(x => x.Exercises[i].ActualSets[j].Reps, new { htmlAttributes = new { placeholder = "Reps", @class = "form-control", @aria_describedby = "reps" } })
+                                <span class="input-group-addon" id="reps">Reps</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                @Html.EditorFor(x => x.Exercises[i].ActualSets[j].WeightInKg, new { htmlAttributes = new { placeholder = "Weight in KG", @class = "form-control", @aria_describedby = "weight" } })
+                                <span class="input-group-addon" id="weight">Kgs</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                @Html.EditorFor(x => x.Exercises[i].ActualSets[j].Minutes, new { htmlAttributes = new { placeholder = "Mins", @class = "form-control", @aria_describedby = "mins" } })
+                                <span class="input-group-addon" id="mins">Minutes</span>
+                            </div>
+                        </div>
+                        
+            }
+
+            
+            <div class="pagerContainer">
+                @if (i - 1 >= 0)
+                {
+                    <div class="pagerLink" id="previous">
+                        <a href="#exercise@(i-1)">Previous</a>
+                    </div>
+                }
+
+                @if (i + 1 > Model.Exercises.Count)
+                {
+                    <div class="pagerLink">
+                        <input type="submit" />
+                    </div>
+                }
+                else
+                {
+                    <div class="pagerLink">
+                        <a href="#exercise@(i+1)">Next</a>
+                    </div>
+                }
+                
             </div>
             
-        }
+        </div>
+
+        
 
     }
-    <input type="submit" />
-}
+                <input type="submit" />
+    }
 

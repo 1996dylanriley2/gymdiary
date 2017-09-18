@@ -1,0 +1,28 @@
+﻿.pagerLink{
+    text-align:center;
+    opacity:.75;
+    background-color:lightgrey;
+    font-size:20px;
+    display:inline-block;
+    padding:1%;
+}
+.pagerLink a{
+    display: block;
+    height: 100%;
+    width: 100%;
+    text-decoration: none
+}
+.pagerLink:hover{
+    background-color:black;
+}
+.pagerContainer{
+    margin-left:40%;
+    margin-right:40%;
+}
+.virtual-page{
+    
+}
+.disabledPager{
+    pointer-events: none;
+   cursor: default;
+}

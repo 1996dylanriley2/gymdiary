@@ -245,6 +245,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\dashboard.css" />
+    <Content Include="Content\DoWorkout.css" />
     <Content Include="Content\HomePage.css" />
     <Content Include="Content\Images\HomePage\75ca22434b3d810142d165da6eed8f83.jpg" />
     <Content Include="Content\Images\HomePage\Arnold-Schwarzenegger-Champion-BodyBuilder.jpg" />
@@ -278,6 +279,7 @@
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\src\DoWorkout.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
