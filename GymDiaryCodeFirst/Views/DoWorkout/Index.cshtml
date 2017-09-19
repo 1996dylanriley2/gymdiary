@@ -22,19 +22,19 @@
                 <h5>Set #@(j + 1)</h5>
                         <div class="col-sm-4">
                             <div class="input-group">
-                                @Html.EditorFor(x => x.Exercises[i].ActualSets[j].Reps, new { htmlAttributes = new { placeholder = "Reps", @class = "form-control", @type="number", @aria_describedby = "reps" } })
+                                @Html.EditorFor(x => x.Exercises[i].ActualSets[j].Reps, new { htmlAttributes = new { placeholder = "Reps", @class = "form-control", @type="number", @aria_describedby = "reps", autocomplete = "off" } })
                                 <span class="input-group-addon" id="reps">Reps</span>
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="input-group">
-                                @Html.EditorFor(x => x.Exercises[i].ActualSets[j].WeightInKg, new { htmlAttributes = new { placeholder = "Weight in KG", @type = "number", @class = "form-control", @aria_describedby = "weight" } })
+                                @Html.EditorFor(x => x.Exercises[i].ActualSets[j].WeightInKg, new { htmlAttributes = new { placeholder = "Weight in KG", @type = "number", @class = "form-control", @aria_describedby = "weight", autocomplete = "off" } })
                                 <span class="input-group-addon" id="weight">Kgs</span>
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="input-group">
-                                @Html.EditorFor(x => x.Exercises[i].ActualSets[j].Minutes, new { htmlAttributes = new { placeholder = "Mins", @type = "number", @class = "form-control", @aria_describedby = "mins" } })
+                                @Html.EditorFor(x => x.Exercises[i].ActualSets[j].Minutes, new { htmlAttributes = new { placeholder = "Mins", @type = "number", @class = "form-control", @aria_describedby = "mins", autocomplete = "off" } })
                                 <span class="input-group-addon" id="mins">Minutes</span>
                             </div>
                         </div>

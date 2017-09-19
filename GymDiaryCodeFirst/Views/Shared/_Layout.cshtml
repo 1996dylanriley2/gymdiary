@@ -36,18 +36,18 @@
     <aside id="sidebar-mobile" class="hide">
         <div id="sidebarContent">
             <ul>
-                <li>@Html.ActionLink("Home", "Index", "Home", htmlAttributes: new { id = "registerLink", @class = "menuTextMobile" })</li>
+                <li>@Html.ActionLink("Home", "Index", "Home", null, new { @class = "menuTextMobile" })</li>
 
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <li>@Html.ActionLink("Account", "About", "Home", htmlAttributes: new { id = "registerLink", @class = "menuTextMobile" })</li>
+                    <li>@Html.ActionLink("Account", "Index", "Manage",null, new { @class = "menuTextMobile"})</li>
                     <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
                 }
 
                 @if (!User.Identity.IsAuthenticated)
                 {
                     <li>
-                        @Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink",  @class = "menuTextMobile"})
+                        @Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { @class = "menuTextMobile"})
                     </li>
                     <li class="positionAbsolute">
                         @Html.Partial("_LoginFormPartial", new GymDiaryCodeFirst.Models.LoginViewModel())

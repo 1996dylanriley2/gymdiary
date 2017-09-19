@@ -19,5 +19,6 @@ namespace GymDiaryCodeFirst.Models
         public float? WeightInKg { get; set; }
         public int? Reps { get; set; }
         public float? Minutes { get; set; }
+        public bool IsDesiredSet { get; set; }
     }
 }
