@@ -120,6 +120,10 @@
     }
     .mobile-list{
         display:inline;
+        width:50%;
+    }
+    .mobile-list .btn{
+        margin-left:8%;
     }
     .desktop-link{
         display:none;
