@@ -1,28 +1,61 @@
-﻿.pagerLink{
+﻿@media only screen and (max-width: 768px) {
+    .pagerLink.pagerLink{
+        width:30%;
+        left:10%;
+    }
+    .input-group-addon{
+        display:none;
+    }
+}
+
+.pagerLink{
     text-align:center;
     opacity:.75;
-    background-color:lightgrey;
+    background-color:#a09393;
     font-size:20px;
     display:inline-block;
-    padding:1%;
+    border-radius:10px;
+    margin:5%;
+    width:15%;
+    position:relative;
+    left:25%;
 }
 .pagerLink a{
     display: block;
     height: 100%;
     width: 100%;
-    text-decoration: none
+    text-decoration: none;
+    padding:2%;
+}
+.pagerLink a, .pagerLink a:visited{
+    color:black;
 }
 .pagerLink:hover{
-    background-color:black;
+    background-color:teal;
+    opacity:100;
 }
 .pagerContainer{
-    margin-left:40%;
-    margin-right:40%;
+    display:block;
+    width:100%;
 }
-.virtual-page{
-    
+.pagerSubmit{
+    display:inline-block;
+    width:150px;
 }
-.disabledPager{
-    pointer-events: none;
+.pagerSubmit.pagerLink input{
+    width:100%;
+    height:100%;
+    font-size:20px;
+    background-color:green;
+    color:white;
+    border-radius:10px;
+    border:none;
+    padding:2%;
+}
+.pagerContainer .invis .disabledPager, .pagerContainer .invis{
+   pointer-events: none;
    cursor: default;
+   background-color:transparent;
+   border:none;
+   color:transparent;
 }

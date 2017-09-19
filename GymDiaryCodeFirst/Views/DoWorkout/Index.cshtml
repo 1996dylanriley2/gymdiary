@@ -22,19 +22,19 @@
                 <h5>Set #@(j + 1)</h5>
                         <div class="col-sm-4">
                             <div class="input-group">
-                                @Html.EditorFor(x => x.Exercises[i].ActualSets[j].Reps, new { htmlAttributes = new { placeholder = "Reps", @class = "form-control", @aria_describedby = "reps" } })
+                                @Html.EditorFor(x => x.Exercises[i].ActualSets[j].Reps, new { htmlAttributes = new { placeholder = "Reps", @class = "form-control", @type="number", @aria_describedby = "reps" } })
                                 <span class="input-group-addon" id="reps">Reps</span>
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="input-group">
-                                @Html.EditorFor(x => x.Exercises[i].ActualSets[j].WeightInKg, new { htmlAttributes = new { placeholder = "Weight in KG", @class = "form-control", @aria_describedby = "weight" } })
+                                @Html.EditorFor(x => x.Exercises[i].ActualSets[j].WeightInKg, new { htmlAttributes = new { placeholder = "Weight in KG", @type = "number", @class = "form-control", @aria_describedby = "weight" } })
                                 <span class="input-group-addon" id="weight">Kgs</span>
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="input-group">
-                                @Html.EditorFor(x => x.Exercises[i].ActualSets[j].Minutes, new { htmlAttributes = new { placeholder = "Mins", @class = "form-control", @aria_describedby = "mins" } })
+                                @Html.EditorFor(x => x.Exercises[i].ActualSets[j].Minutes, new { htmlAttributes = new { placeholder = "Mins", @type = "number", @class = "form-control", @aria_describedby = "mins" } })
                                 <span class="input-group-addon" id="mins">Minutes</span>
                             </div>
                         </div>
@@ -49,16 +49,22 @@
                         <a href="#exercise@(i-1)">Previous</a>
                     </div>
                 }
-
-                @if (i + 1 > Model.Exercises.Count)
+                else
                 {
-                    <div class="pagerLink">
-                        <input type="submit" />
+                    <div class="invis pagerLink" id="previous">
+                        <a class="disabledPager">Previous</a>
+                    </div>
+                }
+
+                @if (i + 1 >= Model.Exercises.Count)
+                {
+                    <div class="pagerSubmit pagerLink" id="finish">
+                        <input type="submit" value="Finish">
                     </div>
                 }
                 else
                 {
-                    <div class="pagerLink">
+                    <div class="pagerLink" id="next">
                         <a href="#exercise@(i+1)">Next</a>
                     </div>
                 }
@@ -70,6 +76,6 @@
         
 
     }
-                <input type="submit" />
+                
     }
 
